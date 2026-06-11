@@ -1,0 +1,242 @@
+[
+  {
+    "id": "profile_ARG",
+    "text": "Argentina (ARG) — CONMEBOL. FIFA World Cup appearances: 18, titles: 3 (1978, 1986, 2022). Argentina are the reigning world champions and ELO-rated among the world's top two sides. Playing a flexible 4-3-3 / 4-4-2 hybrid under Lionel Scaloni, their style is built on positional discipline and explosive transitions. Lionel Messi — four-time finalist, one-time champion — remains the central figure despite being in the twilight of his career. Key players include Julián Álvarez (striker), Enzo Fernández (midfielder), Alexis Mac Allister, and goalkeeper Emiliano Martínez, the 2022 Golden Glove winner. Argentina's strength is their defensive solidity and ability to absorb pressure before striking decisively on the counter.",
+    "metadata": {"team_code": "ARG", "team_name": "Argentina", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_BRA",
+    "text": "Brazil (BRA) — CONMEBOL. FIFA World Cup appearances: 22 (every tournament), titles: 5 (1958, 1962, 1970, 1994, 2002). Brazil are the most successful nation in World Cup history and carry the highest ELO of any team entering 2026. They typically deploy a high-pressing 4-2-3-1 or 4-3-3 that emphasises technical brilliance and attacking width. Vinícius Jr, Rodrygo, and Endrick lead the attacking line. Casemiro or Lucas Paquetá provide the midfield engine. Brazil have not won the World Cup since 2002 and carry the weight of national expectation into every tournament. Their Achilles heel historically is penalty shootouts, where they have lost in 1994 (won), 1998, and 2022.",
+    "metadata": {"team_code": "BRA", "team_name": "Brazil", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_FRA",
+    "text": "France (FRA) — UEFA. FIFA World Cup appearances: 16, titles: 2 (1998, 2018). France are perennial contenders with extraordinary depth; they were 2022 finalists despite losing several key players to injury during the tournament. Under Didier Deschamps, they typically deploy a 4-2-3-1 built on physicality and Kylian Mbappé's devastating pace. Mbappé has won two consecutive Golden Boots and is considered the best player in the world in the post-Messi era. Antoine Griezmann provides the link between midfield and attack; Aurélien Tchouaméni and Adrien Rabiot offer defensive solidity. France's wealth of talent across all positions makes them a consistent favourite for any major tournament.",
+    "metadata": {"team_code": "FRA", "team_name": "France", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_ENG",
+    "text": "England (ENG) — UEFA. FIFA World Cup appearances: 17, titles: 1 (1966). England have ended a long major-tournament drought at the semi-final stage, reaching the last four in 2018 and 2022 and the final of Euro 2020 and 2024. Under Gareth Southgate (or successor), they deploy a pragmatic 4-3-3 / 4-2-3-1 built on set-piece excellence and the individual quality of Jude Bellingham and Harry Kane. Kane is England's all-time top scorer; Bellingham provides creativity from deep. England's historical weakness has been converting possession into goals and their penalty shootout record (lost 7 of 8 before winning in 2021). The 2026 tournament represents a genuine opportunity for their first title since 1966.",
+    "metadata": {"team_code": "ENG", "team_name": "England", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_ESP",
+    "text": "Spain (ESP) — UEFA. FIFA World Cup appearances: 16, titles: 1 (2010). Spain's tiki-taka dominance of 2008–2012 gave way to a transitional period, but a new generation has emerged around FC Barcelona and Real Madrid youth products. They won Euro 2024 playing attractive, progressive football under Luis de la Fuente. Key players include Pedri, Gavi, Lamine Yamal, and Álvaro Morata. Spain typically deploy a possession-based 4-3-3 with aggressive pressing. Their strength is controlling games through midfield; their historic weakness has been converting dominance into goals against defensively-organised opponents.",
+    "metadata": {"team_code": "ESP", "team_name": "Spain", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_GER",
+    "text": "Germany (GER) — UEFA. FIFA World Cup appearances: 20, titles: 4 (1954, 1974, 1990, 2014). Germany failed to progress beyond the group stage at both 2018 and 2022, ending a long run of deep tournament runs. A rebuild under Julian Nagelsmann has restored confidence; they were hosts and strong performers at Euro 2024 before losing to Spain in the quarter-finals. Key players include Florian Wirtz (creative midfielder), Kai Havertz (striker), Toni Kroos (returned from retirement for Euro 2024), and Manuel Neuer in goal. Germany are expected to return to their traditional role as tournament favourites for 2026.",
+    "metadata": {"team_code": "GER", "team_name": "Germany", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_POR",
+    "text": "Portugal (POR) — UEFA. FIFA World Cup appearances: 9, titles: 0 (best finish: 3rd in 1966 and 2006). Portugal have consistently been a major-tournament contender, winning Euro 2016. Cristiano Ronaldo's international career — 900+ caps, 130+ goals — defined the team for two decades, though his role is diminishing. The new generation, led by Bernardo Silva, Bruno Fernandes, and Rafael Leão, provides quality throughout. Portugal's 2026 aspirations centre on going deeper than their quarter-final exits in 2018 and 2022. Under Roberto Martínez they play a 4-3-3 with pressing triggers and clinical finishing.",
+    "metadata": {"team_code": "POR", "team_name": "Portugal", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_NED",
+    "text": "Netherlands (NED) — UEFA. FIFA World Cup appearances: 11, titles: 0 (best finish: runners-up in 1974, 1978, 2010). The Netherlands returned to form under Louis van Gaal, reaching the 2022 quarter-finals before losing to Argentina on penalties. Under Ronald Koeman they qualified well for 2026 with Virgil van Dijk marshalling the defence. Frenkie de Jong controls midfield tempo; Cody Gakpo and Memphis Depay provide the attacking threat. The Netherlands tend to perform best in short tournaments where their tactical flexibility and individual quality can be decisive.",
+    "metadata": {"team_code": "NED", "team_name": "Netherlands", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_BEL",
+    "text": "Belgium (BEL) — UEFA. FIFA World Cup appearances: 14, titles: 0 (best finish: 3rd in 2018). Belgium's 'golden generation' — De Bruyne, Hazard, Lukaku, Courtois — may be past its peak. Eden Hazard retired; Romelu Lukaku enters 2026 in the autumn of his career. Kevin De Bruyne remains world-class in midfield. Belgium reached the 2018 semi-finals and 2022 group stage. The squad transition makes their 2026 prospects uncertain, though De Bruyne's presence means they are never to be taken lightly. Coach Domenico Tedesco deploys a fluid 3-4-2-1 system.",
+    "metadata": {"team_code": "BEL", "team_name": "Belgium", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_ITA",
+    "text": "Italy (ITA) — UEFA. FIFA World Cup appearances: 18, titles: 4 (1934, 1938, 1982, 2006). Italy failed to qualify for 2018 and struggled in 2022 qualifying as well, only sealing their place through play-offs. The Euro 2020 champions under Roberto Mancini have undergone changes with Luciano Spalletti now in charge. The Italian defence — historically the foundation of their success — remains disciplined. Federico Chiesa, Nicolo Barella, and Gianluigi Donnarumma are key figures. Italy's historical strength is tournament resilience; their weakness is an ageing defensive structure and a dearth of elite strikers.",
+    "metadata": {"team_code": "ITA", "team_name": "Italy", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_CRO",
+    "text": "Croatia (CRO) — UEFA. FIFA World Cup appearances: 7, titles: 0 (best finish: 3rd in 1998 and 2022, runners-up 2018). Croatia have punched far above their weight for a nation of four million, reaching back-to-back knockout stages and finals. The generation led by Luka Modrić, Marcelo Brozović, and Ivan Perišić is ageing, but Croatia's tactical cohesion and resilience remain elite. They are renowned for their penalty shootout composure, having won three in 2022. The main question for 2026 is whether the squad can regenerate around Modrić, now in his late 30s.",
+    "metadata": {"team_code": "CRO", "team_name": "Croatia", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_SUI",
+    "text": "Switzerland (SUI) — UEFA. FIFA World Cup appearances: 12, titles: 0 (best finish: quarter-final 1934, 1938, 1954). Switzerland are consistent qualifiers and solid performers at major tournaments without threatening to win. They eliminated France in the 2020 Euros and regularly advance from group stages. Granit Xhaka marshals the midfield; Xherdan Shaqiri provides experience and creativity. Their 4-2-3-1 is disciplined and difficult to break down. Switzerland are unlikely tournament winners but capable of upsets against anyone on a given day.",
+    "metadata": {"team_code": "SUI", "team_name": "Switzerland", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_AUT",
+    "text": "Austria (AUT) — UEFA. FIFA World Cup appearances: 7, titles: 0 (best finish: 3rd in 1954). Austria returned to major tournament contention in the 2020s under Ralf Rangnick, reaching the Euro 2024 round of 16 after winning their group. Marko Arnautović provides experience up front; David Alaba — when fit — is world-class from defence. Austria's high-press, transitions-focused game is modern and effective. They are genuine surprise-package candidates for 2026 though a quarter-final would represent a historic achievement.",
+    "metadata": {"team_code": "AUT", "team_name": "Austria", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_TUR",
+    "text": "Turkey (TUR) — UEFA. FIFA World Cup appearances: 2, titles: 0 (best finish: 3rd in 2002). Turkey had a breakout Euro 2024 tournament, reaching the quarter-finals with attacking performances built around Hakan Çalhanoğlu's deep playmaking and Arda Güler's creative burst from Real Madrid. Montella's Turkey play with energy and directness. Their WC record is limited but 2026 represents their best chance in decades to make a deep run given the expanded 48-team format.",
+    "metadata": {"team_code": "TUR", "team_name": "Turkey", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_DEN",
+    "text": "Denmark (DEN) — UEFA. FIFA World Cup appearances: 6, titles: 0 (best finish: quarter-final 1998). Denmark are a consistently solid team built around Christian Eriksen's vision in midfield and a well-organised back line. Under Kasper Hjulmand they played their most expansive football in years at Euro 2020 and Euro 2024. Pierre-Emile Højbjerg provides the defensive-midfield anchor. Denmark are renowned for their team ethic over individual stars and their 4-3-3 pressing game makes them uncomfortable opponents.",
+    "metadata": {"team_code": "DEN", "team_name": "Denmark", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_SRB",
+    "text": "Serbia (SRB) — UEFA. FIFA World Cup appearances: 3 as Serbia, 12 including Yugoslavia. Titles: 0. Serbia qualified for 2022 and 2026 comfortably under Dragan Stojković. Dušan Vlahović leads the attack with Aleksandar Mitrović in competition; Sergej Milinković-Savić and Luka Jović offer quality in midfield and forward areas. Serbia's strength is individual technical quality; their weakness is tactical cohesion and consistency in big matches. They are capable of upsetting higher-rated opponents.",
+    "metadata": {"team_code": "SRB", "team_name": "Serbia", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_POL",
+    "text": "Poland (POL) — UEFA. FIFA World Cup appearances: 9, titles: 0 (best finish: 3rd in 1974 and 1982). Poland's modern era is defined by Robert Lewandowski, who enters 2026 at 37 but remains dangerous in the penalty area. Without him, Poland are an average European side. Their qualifying record is consistent; their tournament record has been group-stage exits in recent cycles. The 48-team format and co-hosting context gives Poland a potentially easier group-stage path than in previous 32-team editions.",
+    "metadata": {"team_code": "POL", "team_name": "Poland", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_UKR",
+    "text": "Ukraine (UKR) — UEFA. FIFA World Cup appearances: 2, titles: 0 (best finish: quarter-final 2006). Ukraine's most successful tournament remains 2006 when Andriy Shevchenko led them to the last eight. The current squad, built around the Shakhtar Donetsk and Dynamo Kyiv domestic base disrupted by the war, has shown resilience in qualifying. Mykhailo Mudryk provides pace and skill on the wing. Ukraine's qualification for 2026 carries emotional significance beyond football.",
+    "metadata": {"team_code": "UKR", "team_name": "Ukraine", "confederation": "UEFA"}
+  },
+  {
+    "id": "profile_USA",
+    "text": "United States (USA) — CONCACAF. FIFA World Cup appearances: 11, titles: 0 (best finish: 3rd in 1930). The USA are co-hosts of the 2026 tournament alongside Canada and Mexico. MLS has grown substantially; the USMNT squad increasingly features European-based players including Christian Pulisic (AC Milan), Gio Reyna, Weston McKennie, and Tyler Adams. Under Gregg Berhalter or successor they play a high-energy pressing game. Co-host status and a home crowd advantage makes 2026 the most significant World Cup in US soccer history. Expectations are at least a quarter-final.",
+    "metadata": {"team_code": "USA", "team_name": "United States", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_MEX",
+    "text": "Mexico (MEX) — CONCACAF. FIFA World Cup appearances: 17, titles: 0 (best finish: quarter-final 1970 and 1986). Mexico have reached the round of 16 in seven consecutive World Cups (1994–2018) before their group stage exit in 2022. Hirving 'Chucky' Lozano, Raúl Jiménez, and Henry Martín provide experienced attacking options. As co-hosts in 2026, Mexico will receive enormous home-crowd support and face manageable group opponents. Breaking the round of 16 curse remains the defining ambition for Mexican football.",
+    "metadata": {"team_code": "MEX", "team_name": "Mexico", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_CAN",
+    "text": "Canada (CAN) — CONCACAF. FIFA World Cup appearances: 2 (1986, 2022). Canada qualified for Qatar 2022 as CONCACAF winners — their first appearance in 36 years. Alphonso Davies (Bayern Munich) is the standout talent; Jonathan David and Cyle Larin provide the goal threat. As 2026 co-hosts Canada will experience their largest footballing moment. The growth of the national programme under John Herdman (and successor) has been remarkable. Canada play a high-pressing 4-3-3 and are a genuine threat for a tournament outside the round of 16 on home soil.",
+    "metadata": {"team_code": "CAN", "team_name": "Canada", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_PAN",
+    "text": "Panama (PAN) — CONCACAF. FIFA World Cup appearances: 2 (2018, 2026). Panama are the smallest nation regularly threatening CONCACAF's top spots. Their physical, well-drilled defensive organisation under Thomas Christiansen makes them difficult opponents. Rómulo Otero and Rolando Blackburn provide creative options. Reaching the round of 16 would be a historic achievement for Panamanian football.",
+    "metadata": {"team_code": "PAN", "team_name": "Panama", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_CRC",
+    "text": "Costa Rica (CRC) — CONCACAF. FIFA World Cup appearances: 6, titles: 0 (best finish: quarter-final 2014). In 2014 Costa Rica were the great surprise of the tournament, topping a group containing Uruguay, Italy, and England and advancing to the quarter-finals before losing to Netherlands on penalties. Bryan Ruiz's generation has given way to a new squad including Keysher Fuller and Yeltsin Tejeda. Costa Rica under Luis Fernando Suárez are compact and hard to break down; their counter-attack is their primary weapon.",
+    "metadata": {"team_code": "CRC", "team_name": "Costa Rica", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_JAM",
+    "text": "Jamaica (JAM) — CONCACAF. FIFA World Cup appearances: 1 (1998). Jamaica returned to World Cup qualification contention in the 2020s with a squad boosted by dual-nationals from the UK and North America. Michail Antonio (West Ham) and Bobby Reid provide a physical threat. Their history as a single World Cup participant means 2026 would be a significant achievement for the Reggae Boyz.",
+    "metadata": {"team_code": "JAM", "team_name": "Jamaica", "confederation": "CONCACAF"}
+  },
+  {
+    "id": "profile_MAR",
+    "text": "Morocco (MAR) — CAF. FIFA World Cup appearances: 7, titles: 0 (best finish: semi-final 2022). Morocco's historic 2022 run to the semi-final — the first by an African or Arab nation — transformed their status in world football. Walid Regragui's ultra-disciplined defensive system with quick counter-attacking transitions is their hallmark. Hakim Ziyech, Sofyan Amrabat, Achraf Hakimi, and Azzedine Ounahi are key players. Morocco are genuine contenders for 2026, no longer underdogs, with the added motivation of having hosted a World Cup bid.",
+    "metadata": {"team_code": "MAR", "team_name": "Morocco", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_SEN",
+    "text": "Senegal (SEN) — CAF. FIFA World Cup appearances: 3, titles: 0 (best finish: quarter-final 2002). Senegal won the Africa Cup of Nations in 2022 and are consistently among Africa's strongest nations. Sadio Mané leads the attack with ferocious pressing and pace; Kalidou Koulibaly captains the defence from Napoli. Their 4-3-3 is direct and physical. Senegal's 2002 quarter-final run remains their best World Cup performance; with their current squad they have the quality to match or surpass it.",
+    "metadata": {"team_code": "SEN", "team_name": "Senegal", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_NGA",
+    "text": "Nigeria (NGA) — CAF. FIFA World Cup appearances: 7, titles: 0 (best finish: round of 16 in 1994, 1998, 2014). Nigeria's 'Super Eagles' are an enigmatic team — enormously talented individually but historically inconsistent as a collective. Victor Osimhen (Napoli) is one of Europe's most clinical strikers; Wilfred Ndidi and Alex Iwobi provide the midfield quality. Nigeria can beat anyone on their day but also exit tournaments earlier than their talent suggests.",
+    "metadata": {"team_code": "NGA", "team_name": "Nigeria", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_CIV",
+    "text": "Ivory Coast (CIV) — CAF. FIFA World Cup appearances: 3, titles: 0 (best finish: group stage). Ivory Coast won the 2023 Africa Cup of Nations on home soil. Sébastien Haller leads the attack after recovering from a serious illness; Franck Kessié and Serge Aurier provide experience. The Elephants have not progressed beyond the group stage at World Cups but carry genuine quality and motivation for 2026.",
+    "metadata": {"team_code": "CIV", "team_name": "Ivory Coast", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_RSA",
+    "text": "South Africa (RSA) — CAF. FIFA World Cup appearances: 3 (1998, 2002, 2010), titles: 0. South Africa are the only nation to host a World Cup without progressing past the group stage (2010). Their qualification for 2026 continues a gradual recovery. Percy Tau (Al Ahly) leads the attack. Bafana Bafana are motivated by their home continent's proximity as a tournament host and the legacy of 2010.",
+    "metadata": {"team_code": "RSA", "team_name": "South Africa", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_EGY",
+    "text": "Egypt (EGY) — CAF. FIFA World Cup appearances: 3 (1934, 1990, 2018), titles: 0. Egypt's return to football prominence has been driven by Mohamed Salah, the Liverpool forward who is Africa's all-time top scorer. The Pharaohs are built entirely around Salah's brilliance; when he plays to his best, Egypt can compete with any team; without him at full throttle, they are a midtable CAF side. Egypt's 2026 campaign will hinge on Salah's fitness and form.",
+    "metadata": {"team_code": "EGY", "team_name": "Egypt", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_CMR",
+    "text": "Cameroon (CMR) — CAF. FIFA World Cup appearances: 9, titles: 0 (best finish: quarter-final 1990). The Indomitable Lions were Africa's first quarter-finalists in 1990 when Roger Milla became the tournament's breakout star. André Onana (Man United) is one of the world's best goalkeepers; Vincent Aboubakar provides an experienced striking option. Cameroon's physical and direct style can trouble more technical opponents, though their World Cup record since 1990 has been disappointing.",
+    "metadata": {"team_code": "CMR", "team_name": "Cameroon", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_GHA",
+    "text": "Ghana (GHA) — CAF. FIFA World Cup appearances: 4, titles: 0 (best finish: quarter-final 2010). Ghana were minutes from becoming the first African semi-finalist in 2010 when Uruguay's Luis Suárez deliberately handled a goal-bound shot on the line; Uruguay won the subsequent penalty shootout. Jordan Ayew and Mohammed Kudus are the current generation's key players. Ghana's football development has been strong, and 2026 offers another chance to emulate 2010's run.",
+    "metadata": {"team_code": "GHA", "team_name": "Ghana", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_TUN",
+    "text": "Tunisia (TUN) — CAF. FIFA World Cup appearances: 6, titles: 0 (best finish: group stage, though they beat France 1-0 in 2022). Tunisia are consistent CAF qualifiers but have never advanced from the World Cup group stage. Their 2022 victory over France — albeit with both sides already knowing the result didn't matter for qualification — was a moral highlight. Youssef Msakni leads the midfield creativity. Tunisia's compact 4-4-2 is organised and hard to break down.",
+    "metadata": {"team_code": "TUN", "team_name": "Tunisia", "confederation": "CAF"}
+  },
+  {
+    "id": "profile_JPN",
+    "text": "Japan (JPN) — AFC. FIFA World Cup appearances: 8, titles: 0 (best finish: round of 16 in 2002, 2010, 2022). Japan are Asia's most consistent World Cup side, having advanced from their group in 2022 by defeating Germany and Spain before losing to Croatia on penalties. Under Hajime Moriyasu they play an intensive high-press 4-2-3-1. Ritsu Doan, Daichi Kamada, Takumi Minamino, and Shuichi Gonda are key players. Japan's dream of a quarter-final or beyond will depend on their ability to absorb and execute pressure across a full knockout run.",
+    "metadata": {"team_code": "JPN", "team_name": "Japan", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_KOR",
+    "text": "South Korea (KOR) — AFC. FIFA World Cup appearances: 11, titles: 0 (best finish: 4th in 2002 as co-hosts). Son Heung-min is the standout player — a Tottenham captain and one of Europe's top strikers in his prime. Korea play with intensity and discipline under Jürgen Klinsmann's successor, though results have been inconsistent since 2002's remarkable home tournament. A round of 16 appearance would be considered a success; the dream remains matching 2002's semi-final.",
+    "metadata": {"team_code": "KOR", "team_name": "South Korea", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_AUS",
+    "text": "Australia (AUS) — AFC. FIFA World Cup appearances: 6, titles: 0 (best finish: quarter-final 2006 and 2023 Women's World Cup). The Socceroos reached the round of 16 in 2022 before losing to Argentina. Mathew Leckie, Martin Boyle, and Ajdin Hrustic provide pace and directness. The A-League and increasing number of European-based players have strengthened the squad. Australia's 2026 path will be significantly affected by the schedule and travel logistics given the North American venue.",
+    "metadata": {"team_code": "AUS", "team_name": "Australia", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_KSA",
+    "text": "Saudi Arabia (KSA) — AFC. FIFA World Cup appearances: 6, titles: 0 (best finish: round of 16 in 1994). Saudi Arabia shocked the world in 2022 by defeating Argentina 2-1 in the group stage, one of the biggest upsets in World Cup history. Salem Al-Dawsari scored the decisive goal. The Saudi Pro League has attracted global stars (Ronaldo, Neymar, Benzema) and increased domestic quality. Herve Renard-era tactics — high defensive line, intense pressing — have been carried forward.",
+    "metadata": {"team_code": "KSA", "team_name": "Saudi Arabia", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_IRN",
+    "text": "Iran (IRN) — AFC. FIFA World Cup appearances: 6, titles: 0 (best finish: group stage). Iran are Asia's other consistent qualifier alongside Japan and South Korea. Carlos Queiroz shaped the team for two decades; his defensive, counter-attacking style remains the template. Sardar Azmoun and Mehdi Taremi are the attacking threat. Iran nearly caused multiple upsets in 2022 before exiting in the group stage. Their defensive discipline makes them awkward opponents.",
+    "metadata": {"team_code": "IRN", "team_name": "Iran", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_QAT",
+    "text": "Qatar (QAT) — AFC. FIFA World Cup appearances: 1 (2022 as hosts). Qatar became the first host nation to be eliminated in the group stage (2022), losing all three group matches. The AFC pathway means they requalified for 2026 through standard qualifying. Their squad is built around the Al-Rayyan and Al-Sadd domestic league players with Akram Afif as the creative outlet. Qatar's investment in football infrastructure is world-class, but the on-field product remains a work in progress.",
+    "metadata": {"team_code": "QAT", "team_name": "Qatar", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_UAE",
+    "text": "United Arab Emirates (UAE) — Inter-Confederation playoff. FIFA World Cup appearances: 1 (1990). The UAE last appeared at a World Cup in 1990. Their return would represent a major achievement for Gulf football beyond Qatar's hosting experience. The domestic UAE Pro League has grown in quality. Ali Mabkhout is the all-time AFC top scorer and remains a dangerous finisher. A 2026 appearance would be celebrated nationally as a milestone in UAE's football development.",
+    "metadata": {"team_code": "UAE", "team_name": "United Arab Emirates", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_IRQ",
+    "text": "Iraq (IRQ) — AFC. FIFA World Cup appearances: 1 (1986). Iraq are building a consistent AFC programme under Jesús Casas. Ayman Hussein is the primary goal-scoring threat. Iraq won the 2023 WAFF Championship and qualified for 2026 after a long absence. Their high-energy pressing style in Asian qualifying made them difficult opponents; the step up to World Cup level will test whether that form translates.",
+    "metadata": {"team_code": "IRQ", "team_name": "Iraq", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_IDN",
+    "text": "Indonesia (IDN) — AFC. FIFA World Cup appearances: 1 (1938 as Dutch East Indies). Indonesia's return to the World Cup stage after 88 years is a landmark moment for Southeast Asian football. A new generation of dual-nationals — including players born in the Netherlands — has transformed the squad. Shin Tae-yong built a disciplined defensive structure. Qualification alone is a historic achievement; competing at their first modern World Cup will be the experience of a generation for Indonesian fans.",
+    "metadata": {"team_code": "IDN", "team_name": "Indonesia", "confederation": "AFC"}
+  },
+  {
+    "id": "profile_NZL",
+    "text": "New Zealand (NZL) — OFC. FIFA World Cup appearances: 3 (1982, 2010, 2026). New Zealand's 'All Whites' are the OFC's sole direct representatives. In 2010 they were the only team in South Africa not to lose a match (3 draws), being eliminated in the group stage on goal difference. Chris Wood is New Zealand's all-time leading scorer and a prolific Championship striker. OFC's limited competition makes NZL the automatic qualifier; the challenge is to compete with dramatically higher-ranked opponents in the group stage.",
+    "metadata": {"team_code": "NZL", "team_name": "New Zealand", "confederation": "OFC"}
+  },
+  {
+    "id": "profile_COL",
+    "text": "Colombia (COL) — CONMEBOL. FIFA World Cup appearances: 7, titles: 0 (best finish: quarter-final 2014). James Rodríguez won the 2014 World Cup Golden Boot and was the standout player of that tournament. The current squad features Luis Díaz (Liverpool), Jhon Durán, and Yerson Mosquera as the emerging generation. Colombia play an attacking 4-2-3-1 under Néstor Lorenzo. Their qualifying form in CONMEBOL has been strong; a deep 2026 run is within their capability.",
+    "metadata": {"team_code": "COL", "team_name": "Colombia", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_URU",
+    "text": "Uruguay (URU) — CONMEBOL. FIFA World Cup appearances: 14, titles: 2 (1930, 1950). Uruguay have won the World Cup twice and have consistently outperformed their population of 3.5 million. Darwin Núñez (Liverpool) and Facundo Pellistri lead the attack; Rodrigo Bentancur and Federico Valverde are midfield class. Uruguay's pressing intensity under Marcelo Bielsa's successor is high. They exited 2022 on goal difference; their hunger for a deep run remains strong.",
+    "metadata": {"team_code": "URU", "team_name": "Uruguay", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_ECU",
+    "text": "Ecuador (ECU) — CONMEBOL. FIFA World Cup appearances: 4, titles: 0 (best finish: round of 16 in 2006). Ecuador opened the 2022 World Cup with a 2-0 victory over hosts Qatar, one of Enner Valencia's international career highlights. Valencia — top scorer in 2022 with 3 goals — leads a squad that has developed strongly through CONMEBOL qualifying. Moisés Caicedo (Chelsea) is one of Europe's best defensive midfielders. Ecuador's 2026 prospects depend on advancing beyond the group stage for only the second time.",
+    "metadata": {"team_code": "ECU", "team_name": "Ecuador", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_VEN",
+    "text": "Venezuela (VEN) — Inter-Confederation playoff / CONMEBOL. FIFA World Cup appearances: 0. Venezuela have never qualified for the World Cup but came closer than ever in 2026 qualifying. A generation of players raised in Europe and South America has dramatically improved the Vinotinto. Salomón Rondón remains their experienced focal point; Yangel Herrera provides midfield creativity. Qualification for 2026 would be the single greatest achievement in Venezuelan football history.",
+    "metadata": {"team_code": "VEN", "team_name": "Venezuela", "confederation": "CONMEBOL"}
+  },
+  {
+    "id": "profile_CHL",
+    "text": "Chile (CHL) — CONMEBOL inter-confederation playoff. FIFA World Cup appearances: 9, titles: 0 (best finish: 3rd in 1962 as hosts). Chile's golden generation — Alexis Sánchez, Arturo Vidal, Gary Medel — won back-to-back Copa América titles in 2015 and 2016 and reached the 2017 Confederations Cup final. That generation is ageing, and Chile missed 2018 and 2022. A rebuilt squad fought their way through the inter-confederation playoff for 2026. Alexis Sánchez remains capable of moments of brilliance at the top level.",
+    "metadata": {"team_code": "CHL", "team_name": "Chile", "confederation": "CONMEBOL"}
+  }
+]

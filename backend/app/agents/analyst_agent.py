@@ -49,7 +49,10 @@ def _build_context(state: PlatformState) -> str:
 
     rag = state.get("rag_docs", [])
     if rag:
-        ctx["historical_context"] = rag[:3]  # top 3 most relevant
+        # Use up to 6 docs. With interleaved retrieval these represent at most
+        # 2 documents per collection, giving balanced historical/profile/report
+        # context without overwhelming the prompt.
+        ctx["historical_context"] = rag[:6]
 
     return json.dumps(ctx, indent=2, default=str)
 

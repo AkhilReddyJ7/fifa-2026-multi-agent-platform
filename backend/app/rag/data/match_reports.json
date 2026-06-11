@@ -1,0 +1,82 @@
+[
+  {
+    "id": "report_2022_qf_fra_eng",
+    "text": "Quarter-final 2022 — France 2-1 England. Tactical report: England pressed high with a 4-3-3 built on Bellingham's box-to-box energy and Saka's directness on the right. France absorbed this with a 4-2-3-1, using Griezmann as a defensive pivot to flood the central channel and Mbappé as a constant counter-threat. England created the better open-play chances — Saka tested Lloris twice in the first half — but France punished transitional moments. Tchouaméni's 17th-minute half-volley from 25 yards was unstoppable. Saka's deflected equaliser was fortunate. Giroud's header from a Mbappé cross was the difference — a signature 'fox in the box' goal. Kane's penalty to level was followed by his catastrophic blazed spot-kick, the defining moment. xG: England 1.8, France 1.3 — England the better team statistically but France were clinical where England were wasteful.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "FRA", "away_code": "ENG"}
+  },
+  {
+    "id": "report_2022_qf_arg_ned",
+    "text": "Quarter-final 2022 — Argentina 2-2 Netherlands AET, Argentina won 4-3 on penalties. Tactical report: Argentina controlled possession with Messi as a free eight, dropping into space between Netherlands' midfield and defence. Molina's run from right-back onto Messi's through-ball for the opener showcased Argentina's width. Álvarez added the second after a rapid transition. Netherlands' tactical response was late substitution of Weghorst — a physical aerial option — who exploited Argentine defensive lapses in the final 10 minutes. Weghorst's header from a rehearsed free kick in the 11th minute of stoppage time was one of the most dramatic equalisers in World Cup history. Argentina's pressing intensity dropped significantly after their second goal, a dangerous pattern. Martínez's psychology-game in the shootout — wasting time, engaging penalty-takers — proved decisive.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "ARG", "away_code": "NED"}
+  },
+  {
+    "id": "report_2022_qf_mar_por",
+    "text": "Quarter-final 2022 — Morocco 1-0 Portugal. Tactical report: Morocco's performance was a masterclass in organised defensive football. Regragui set up a compact 4-4-2 / 4-1-4-1 that denied Portugal any central space. Bruno Fernandes was picked up by Amrabat in deep midfield; Leão's pace was contained by Hakimi staying deeper than usual to provide defensive cover. Morocco's only clear chance was a corner from which En-Nesyri beat Costa with an 80cm leap — the highest header recorded at the 2022 World Cup. Portugal brought on Ronaldo but by that point Morocco's back five was so organised that crossing against their physical defenders was futile. Morocco registered a pressing intensity (PPDA) nearly twice as effective as Portugal's. Defensive transition speed — averaging 4.2 seconds from loss to defensive shape — was central to Morocco's success.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "MAR", "away_code": "POR"}
+  },
+  {
+    "id": "report_2022_qf_cro_bra",
+    "text": "Quarter-final 2022 — Croatia 1-1 Brazil AET, Croatia won 4-2 on penalties. Tactical report: Brazil dominated possession at 57% and created chances through Vinícius Jr's diagonal runs and Richarlison's hold-up play, but Livaković's distribution and decision-making under pressure was elite — he made 11 saves. Neymar's extra-time goal was pure individual brilliance: a feint to create the angle, a precise finish. Croatia's equaliser came from Petković arriving late at the back post after a low cross — Croatia capitalising on Brazil's high defensive line. In the shootout Livaković's save from Rodrygo — diving to his right to push a firm penalty around the post — shifted the momentum. Marquinhos hitting the post eliminated Brazil. Croatia's ability to remain disciplined at 1-0 down and trust their penalty-shootout composure was the decisive factor.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "CRO", "away_code": "BRA"}
+  },
+  {
+    "id": "report_2022_sf_arg_cro",
+    "text": "Semi-final 2022 — Argentina 3-0 Croatia. Tactical report: Croatia's high-press, which had neutralised Brazil, was systematically broken down by Argentina's positional rotations. Messi dropped deep to receive between lines, with Álvarez and Di María making diagonal runs to pull Croatia's centre-backs wide. The penalty — awarded after Livaković's clumsy foul on Álvarez — opened the scoring. Álvarez's second goal, a 40-metre run from the halfway line, exposed Croatia's defensive transitions as three players failed to track the run. Messi's assist for Álvarez's third was the piece of play that defined their partnership. Argentina's pressing intensity (PPDA of 5.2) was their best of the tournament. Croatia's midfield — typically dominant through Modrić and Kovačić — was completely outplayed.",
+    "metadata": {"year": 2022, "stage": "sf", "home_code": "ARG", "away_code": "CRO"}
+  },
+  {
+    "id": "report_2022_sf_fra_mar",
+    "text": "Semi-final 2022 — France 2-0 Morocco. Tactical report: France's pace was Morocco's primary problem. While Morocco had successfully contained Portugal's technical play, France played much more vertically — Mbappé received the ball in wide areas and drove at defenders with pace rather than seeking to play through them. Théo Hernández's volley exploited Morocco's momentary loss of shape at a corner in the 5th minute; the early goal forced Morocco to open up. Kolo Muani's late second put the result beyond doubt. Morocco's defensive structure was excellent until France's direct running forced errors at the individual level rather than the system level. Mbappé created 4 chances and had 7 carries into the final third — Morocco's defenders were frequently turned.",
+    "metadata": {"year": 2022, "stage": "sf", "home_code": "FRA", "away_code": "MAR"}
+  },
+  {
+    "id": "report_2022_final_arg_fra",
+    "text": "Final 2022 — Argentina 3-3 France AET, Argentina won 4-2 on penalties. Tactical report: The match had three distinct phases. Phase 1 (0-80 min): Argentina controlled through a compact 4-4-2, pressing France's build-up and cutting passing lanes to Mbappé. Messi's penalty and Di María's counter-attack goal gave Argentina a 2-0 lead that looked decisive. Phase 2 (80-90 min): Deschamps introduced Thuram and Camavinga; France switched to a 3-4-3 to create overloads wide. Mbappé's penalty and immediate second goal in 97 seconds showcased his elite closing speed — both shots were hit with maximum power before Argentina could recover. Phase 3 (AET): Messi restored the lead with a composed finish in a goalmouth scramble; Mbappé's penalty completed the hat-trick after a Montiel handball. Penalty shootout: Martínez saved Coman; Tchouaméni missed the post; Dembélé converted; Montiel won it. xG: ARG 2.3, FRA 2.1.",
+    "metadata": {"year": 2022, "stage": "final", "home_code": "ARG", "away_code": "FRA"}
+  },
+  {
+    "id": "report_2022_3rd_cro_mar",
+    "text": "Third-place play-off 2022 — Croatia 2-1 Morocco. Tactical report: Croatia's Gvardiol — outstanding throughout the tournament at centre-back — opened the scoring with a commanding header from a set piece, showcasing Croatia's aerial danger from dead balls (7 goals from set pieces across the tournament). Morocco's Dari equalised with a calm side-foot finish. The match was decided by Croatia's superior fitness levels in extra time — Oršić's goal came after Morocco's legs visibly tired. Croatia's tournament statistics: 27 set-piece opportunities converted at the highest rate (23%) in Qatar. Morocco's tournament ended as the first African nation to win 3 knockout games at a single World Cup.",
+    "metadata": {"year": 2022, "stage": "3rd", "home_code": "CRO", "away_code": "MAR"}
+  },
+  {
+    "id": "report_2018_final_fra_cro",
+    "text": "Final 2018 — France 4-2 Croatia. Tactical report: France's counter-attacking system under Deschamps was perfectly suited to facing Croatia's ball-playing style. Griezmann as a free eight between Croatia's defensive and midfield lines broke lines with third-man runs. The Mandžukić own goal from a set piece showed France's set-piece preparation — Griezmann's delivery was practiced for hours. The VAR handball penalty against Perišić was the first such decision in a World Cup final, fundamentally changing the match. Pogba's long-range drive and Mbappé's composed finish into the corner at 18 (second-youngest scorer in a World Cup final) effectively ended Croatia's challenge. Mandžukić's goal was a consolation; Croatia's energy was admirable (14km covered — most of any team in the tournament) but France were more efficient with their chances.",
+    "metadata": {"year": 2018, "stage": "final", "home_code": "FRA", "away_code": "CRO"}
+  },
+  {
+    "id": "report_2018_sf_fra_bel",
+    "text": "Semi-final 2018 — France 1-0 Belgium. Tactical report: Both teams deployed a 4-3-3 / 4-2-3-1 and the match was tactically dense, with both sides' defensive structures preventing clear-cut openings. France's key tactical detail was using Umtiti to step up from the centre-back position and take up offensive positions at set pieces — Belgium's man-marking at corners was caught by this movement. Kanté and Matuidi neutralised De Bruyne and Witsel's combination play. Hazard had Belgium's best moments — his ability to cut inside from the left created danger — but Pavard and Varane collectively contained him. France's xG was 0.9; Belgium's was 0.8 — a match decided by a moment of set-piece quality rather than the balance of play.",
+    "metadata": {"year": 2018, "stage": "sf", "home_code": "FRA", "away_code": "BEL"}
+  },
+  {
+    "id": "report_2018_sf_cro_eng",
+    "text": "Semi-final 2018 — Croatia 2-1 England AET. Tactical report: England started with intensity, their high press causing Croatia problems in the opening 20 minutes. Trippier's direct free kick in the 5th minute from 28 yards rewarded their early dominance. England then dropped into a 4-5-1 block, ceding initiative to Croatia. Croatia's patient possession play — Modrić and Brozović recycling the ball until gaps appeared — gradually wore down England's pressing. Perišić's run to the near post and emphatic volley equaliser was the tactical turning point. In extra time England's legs went — they had pressed so intensely in the first 45 minutes that the additional 30 were always going to favour Croatia's superior conditioning. Mandžukić's winning touch illustrated Croatia's belief that if they could reach extra time, they would win.",
+    "metadata": {"year": 2018, "stage": "sf", "home_code": "CRO", "away_code": "ENG"}
+  },
+  {
+    "id": "report_2018_qf_fra_uru",
+    "text": "Quarter-final 2018 — France 2-0 Uruguay. Tactical report: Uruguay's system relied on Cavani's physical presence and link-up play as a false nine; without him the attacking structure was disjointed. France used Kanté and Matuidi as a double-six to deny Uruguay any central midfield space, forcing play to the flanks where Pavard and Hernández were superior. Varane's powerful header from a corner opened the scoring. Muslera's catastrophic attempt to palm away Griezmann's speculative half-volley — palming it into his own net — ended the contest. Uruguay had 53% possession but created only 0.4 xG; without Cavani the attacking threat was largely absent.",
+    "metadata": {"year": 2018, "stage": "qf", "home_code": "FRA", "away_code": "URU"}
+  },
+  {
+    "id": "report_2018_qf_bel_bra",
+    "text": "Quarter-final 2018 — Belgium 2-1 Brazil. Tactical report: Brazil were overwhelming favourites (xG 2.1 to Belgium's 0.9) but Belgium executed their counter-attacking gameplan perfectly. Fernandinho's own goal opened the scoring against the run of play after a set-piece scramble. Belgium's second was a 7-second, 3-touch counter: De Bruyne's drive from inside his own half picked out Hazard, who fed Lukaku, back to De Bruyne for a composed finish. This destroyed Brazil psychologically. Coutinho's long-range reply gave Brazil hope but Belgium's defensive block — Alderweireld and Kompany plus Courtois (9 saves, xG against 2.1) — held firm. Brazil's insistence on building through the middle rather than exploiting Belgium's wide areas proved tactically limited.",
+    "metadata": {"year": 2018, "stage": "qf", "home_code": "BEL", "away_code": "BRA"}
+  },
+  {
+    "id": "report_2014_final_ger_arg",
+    "text": "Final 2014 — Germany 1-0 Argentina AET. Tactical report: A cagey final in which both teams negated each other's main threats. Germany pressed with their 4-3-2-1 (Christmas tree formation), denying Messi the space between the lines he had exploited in earlier rounds. Di María's absence through injury removed Argentina's primary width and transition speed. Germany's high defensive line compressed the game into the central channel. The decisive moment came in the 113th minute: Schürrle's cross from the left found substitute Götze, who had been on the pitch for only 22 minutes. Götze's chest control and volley was hit perfectly — he had practiced this precise technique in training. Germany's physical and tactical superiority across 90 minutes was undeniable; Argentina's resilience in holding out for extra time was their greatest achievement.",
+    "metadata": {"year": 2014, "stage": "final", "home_code": "GER", "away_code": "ARG"}
+  },
+  {
+    "id": "report_2014_sf_ger_bra",
+    "text": "Semi-final 2014 — Germany 7-1 Brazil. Tactical report: Brazil were disorganised from the first minute, unable to cope with Germany's choreographed pressing and precise vertical passing. The absence of Neymar (injured) removed Brazil's primary ball-carrier who could relieve pressure; Thiago Silva's suspension meant Brazil lacked defensive leadership. Germany scored four goals in 6 minutes (23rd–29th), each one exposing the same structural failing — Brazil's defensive midfield leaving space in front of a disconnected back four. Thomas Müller's third was a snapshot from the edge of the box after Brazil's entire defence was drawn to the ball. The 7-1 result is the largest defeat Brazil have suffered at home in 100 years of football and represents a trauma that continues to define the Brazilian game.",
+    "metadata": {"year": 2014, "stage": "sf", "home_code": "GER", "away_code": "BRA"}
+  },
+  {
+    "id": "report_2014_sf_arg_ned",
+    "text": "Semi-final 2014 — Argentina 0-0 Netherlands AET, Argentina won 4-2 on penalties. Tactical report: Van Gaal's 5-3-2 was built to stifle Messi, deploying Nijhuis as a man-marker on him throughout. Netherlands created more clear chances (xG 1.4 vs 0.8) but Romero was excellent. Van Persie, who had scored 4 goals earlier in the tournament, was largely anonymous. Argentina were content to sit deep and counter, a strategy that required Romero to make 11 saves. Van Gaal's gambit of bringing on Krul as a specialist penalty goalkeeper — publicly announced before the shootout — backfired against Argentina's confident kickers. Romero's two saves (Vlaar, Sneijder) secured Argentina's place in the final.",
+    "metadata": {"year": 2014, "stage": "sf", "home_code": "ARG", "away_code": "NED"}
+  }
+]

@@ -1,0 +1,127 @@
+[
+  {
+    "id": "wc_2022_final_arg_fra",
+    "text": "2022 FIFA World Cup Final — Argentina vs France at Lusail Stadium, Qatar. Result: 3-3 AET, Argentina won 4-2 on penalties. Widely regarded as the greatest World Cup final ever played. Argentina led 2-0 through Ángel Di María and a Kylian Mbappé own goal, only for Mbappé to score twice in 97 seconds in the 80th and 81st minutes to level at 2-2. Lionel Messi restored Argentina's lead in extra time; Mbappé completed his hat-trick with a penalty to make it 3-3. In the shootout, goalkeeper Emiliano Martínez saved Kingsley Coman's penalty and Aurélien Tchouaméni missed, allowing Argentina to lift their third World Cup. Messi won the Golden Ball; Mbappé won the Golden Boot with 8 goals.",
+    "metadata": {"year": 2022, "stage": "final", "home_code": "ARG", "away_code": "FRA"}
+  },
+  {
+    "id": "wc_2022_sf_arg_cro",
+    "text": "2022 FIFA World Cup Semi-final — Argentina vs Croatia at Lusail Stadium. Result: 3-0. Argentina controlled the match from the first minute through Lionel Messi's orchestration. Croatia keeper Dominik Livaković, hero of earlier rounds, was beaten by a Messi penalty after Julián Álvarez was fouled. Álvarez then scored twice — the second a stunning solo run from the halfway line past three defenders — to seal a dominant victory. Croatia's pressing game, which had dismantled Brazil, was neutralised by Argentina's positional play. This was Messi's defining performance on the path to his first World Cup title.",
+    "metadata": {"year": 2022, "stage": "sf", "home_code": "ARG", "away_code": "CRO"}
+  },
+  {
+    "id": "wc_2022_sf_fra_mar",
+    "text": "2022 FIFA World Cup Semi-final — France vs Morocco at Al Bayt Stadium. Result: 2-0. Morocco, the first African and Arab nation to reach a World Cup semi-final, pushed France hard but were undone by two early second-half goals. Théo Hernández struck a powerful volley to open the scoring, and substitute Randal Kolo Muani added a late second. Morocco had held Spain and Portugal to nil in the quarter-finals but France's pace and directness on the counter proved too much. Kylian Mbappé was France's constant threat; Yassine Bounou made several important saves to keep the score respectable.",
+    "metadata": {"year": 2022, "stage": "sf", "home_code": "FRA", "away_code": "MAR"}
+  },
+  {
+    "id": "wc_2022_qf_fra_eng",
+    "text": "2022 FIFA World Cup Quarter-final — France vs England at Al Bayt Stadium. Result: 2-1. England pressed high and created chances through Jude Bellingham and Bukayo Saka but were punished on the counter. Aurélien Tchouaméni's long-range strike opened the scoring; Saka's deflected effort levelled before half-time. Olivier Giroud headed France back in front early in the second half. Harry Kane equalised with a penalty but then blazed his second spot-kick over the bar in the 84th minute, ending England's tournament. France's defensive shape — with Dayot Upamecano and Raphaël Varane — was difficult to break down despite England's territorial dominance.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "FRA", "away_code": "ENG"}
+  },
+  {
+    "id": "wc_2022_qf_arg_ned",
+    "text": "2022 FIFA World Cup Quarter-final — Argentina vs Netherlands at Lusail Stadium. Result: 2-2 AET, Argentina won 4-3 on penalties. A bad-tempered match with 18 yellow cards. Messi's assist for Nahuel Molina and a penalty gave Argentina a 2-0 lead with 11 minutes remaining. Substitute Wout Weghorst pulled one back and then headed an improbable equaliser in the 11th minute of stoppage time from a cleverly worked free kick. In extra time both sides had chances. Argentina's shootout was settled by Emiliano Martínez, who won the Golden Glove and saved Virgil van Dijk's penalty.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "ARG", "away_code": "NED"}
+  },
+  {
+    "id": "wc_2022_qf_mar_por",
+    "text": "2022 FIFA World Cup Quarter-final — Morocco vs Portugal at Al Thumama Stadium. Result: 1-0. Morocco produced one of the great upset performances in tournament history, eliminating Portugal who had knocked out Uruguay and Switzerland. Youssef En-Nesyri's soaring header from a corner beat Diogo Costa in the 42nd minute. Morocco's defensive shape — a disciplined 4-4-2 block that denied space — frustrated Cristiano Ronaldo, brought on as a substitute, and Bruno Fernandes. Morocco registered only 3 shots but converted the one that mattered. This result confirmed Morocco as the tournament's surprise package.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "MAR", "away_code": "POR"}
+  },
+  {
+    "id": "wc_2022_qf_cro_bra",
+    "text": "2022 FIFA World Cup Quarter-final — Croatia vs Brazil at Education City Stadium. Result: 1-1 AET, Croatia won 4-2 on penalties. Brazil dominated possession and created the better chances through Vinícius Jr and Richarlison, but Dominik Livaković was outstanding in goal. Neymar broke the deadlock with a sublime extra-time solo goal — his 77th international, drawing level with Pelé — only for Bruno Petković to equalise from close range nine minutes later. In the shootout Livaković saved Rodrygo's first kick; Marquinhos then hit the post. Croatia advanced despite registering fewer than 30% possession, showcasing their renowned resilience.",
+    "metadata": {"year": 2022, "stage": "qf", "home_code": "CRO", "away_code": "BRA"}
+  },
+  {
+    "id": "wc_2022_r16_mar_esp",
+    "text": "2022 FIFA World Cup Round of 16 — Morocco vs Spain at Education City Stadium. Result: 0-0 AET, Morocco won 3-0 on penalties. In one of the biggest upsets of the tournament, Morocco eliminated the 2010 World Cup holders Spain without conceding from open play. Goalkeeper Bono saved all three Spanish penalties (Sarabia, Carlos Soler, Busquets) while Hakim Ziyech, Badr Benoun, and Achraf Hakimi converted for Morocco. Spain dominated possession (77%) but were unable to penetrate Morocco's deep defensive block. Morocco's organisation and athleticism stifled Spain's tiki-taka approach entirely.",
+    "metadata": {"year": 2022, "stage": "r16", "home_code": "MAR", "away_code": "ESP"}
+  },
+  {
+    "id": "wc_2022_3rd_cro_mar",
+    "text": "2022 FIFA World Cup Third-place play-off — Croatia vs Morocco at Khalifa International Stadium. Result: 2-1. Croatia finished third — their second successive third-place finish after 2018. Joško Gvardiol opened the scoring with a trademark powerful header, but Achraf Dari equalised for Morocco, who were competing in their first semi-final and third-place match in the same tournament. Mislav Oršić struck the decisive goal in extra time to secure bronze for Croatia. Luka Modrić, aged 37, was named in the tournament's All-Star team for the second consecutive World Cup.",
+    "metadata": {"year": 2022, "stage": "3rd", "home_code": "CRO", "away_code": "MAR"}
+  },
+  {
+    "id": "wc_2018_final_fra_cro",
+    "text": "2018 FIFA World Cup Final — France vs Croatia at Luzhniki Stadium, Moscow. Result: 4-2. France became world champions for the second time in a match full of controversy and goals. Mario Mandžukić scored an own goal from a Antoine Griezmann free kick, but Iván Perišić equalised — only for a VAR-awarded handball penalty against Perišić to give Griezmann the chance to restore France's lead. Paul Pogba and Kylian Mbappé added goals to put France 4-1 up; Mandžukić reduced the arrears but it was too late. France's defensive solidity marshalled by N'Golo Kanté allowed their pace on the counter-attack, led by Mbappé, to devastate Croatia.",
+    "metadata": {"year": 2018, "stage": "final", "home_code": "FRA", "away_code": "CRO"}
+  },
+  {
+    "id": "wc_2018_sf_fra_bel",
+    "text": "2018 FIFA World Cup Semi-final — France vs Belgium at Saint Petersburg Stadium. Result: 1-0. In a tactical battle between two technically gifted sides, France edged through on a Samuel Umtiti header from a corner in the 51st minute. Belgium, who had beaten Brazil 2-1 in the quarters with a devastating counter, were unable to convert their possession into clear chances against France's disciplined defensive block. Eden Hazard was France's main problem, but Umtiti and Varane contained him well. Kylian Mbappé's pace on the counter kept Belgium's defence occupied throughout.",
+    "metadata": {"year": 2018, "stage": "sf", "home_code": "FRA", "away_code": "BEL"}
+  },
+  {
+    "id": "wc_2018_sf_cro_eng",
+    "text": "2018 FIFA World Cup Semi-final — Croatia vs England at Luzhniki Stadium. Result: 2-1 AET. England led through Kieran Trippier's stunning free kick in the 5th minute and looked on course to reach their first final since 1966. Perišić equalised with a left-foot volley midway through the second half. In extra time Mandžukić struck the winner after Perišić's header fell to him at the far post. Croatia, who had beaten Denmark and Russia on penalties in earlier rounds, showed their trademark resilience in outlasting an England side that ran out of energy in the additional period.",
+    "metadata": {"year": 2018, "stage": "sf", "home_code": "CRO", "away_code": "ENG"}
+  },
+  {
+    "id": "wc_2018_qf_bel_bra",
+    "text": "2018 FIFA World Cup Quarter-final — Belgium vs Brazil at Kazan Arena. Result: 2-1. Belgium pulled off a major upset to eliminate the tournament favourites Brazil. Fernandinho's own goal gave Belgium a shock lead; Kevin De Bruyne added a second on the counter before the break. Renato Augusto reduced the arrears for Brazil late on, but despite heavy pressure and the introduction of Douglas Costa, Belgium held on. Goalkeeper Thibaut Courtois was outstanding, and De Bruyne's vision to launch counter-attacks was the decisive tactical element.",
+    "metadata": {"year": 2018, "stage": "qf", "home_code": "BEL", "away_code": "BRA"}
+  },
+  {
+    "id": "wc_2018_qf_fra_uru",
+    "text": "2018 FIFA World Cup Quarter-final — France vs Uruguay at Nizhny Novgorod Stadium. Result: 2-0. France progressed without their opponents at full strength — Uruguay played without the injured Edinson Cavani, who had been their talisman. Raphaël Varane headed France in front from a corner in the first half. Uruguay's goalkeeper Fernando Muslera gifted a second goal with a weak attempt to punch away Antoine Griezmann's long-range shot. France were rarely threatened and their defensive organisation proved impenetrable without Uruguay's main striker.",
+    "metadata": {"year": 2018, "stage": "qf", "home_code": "FRA", "away_code": "URU"}
+  },
+  {
+    "id": "wc_2014_final_ger_arg",
+    "text": "2014 FIFA World Cup Final — Germany vs Argentina at Estádio do Maracanã, Rio de Janeiro. Result: 1-0 AET. Mario Götze came off the bench in extra time and controlled a Schürrle cross on his chest before volleying past Sergio Romero to become the hero of Germany's fourth World Cup title. Germany had been dominant throughout the tournament, including their 7-1 demolition of Brazil in the semi-final. Argentina's Ángel Di María was absent through injury and Messi was unable to replicate his group-stage form. Germany became the first European team to win a World Cup on South American soil.",
+    "metadata": {"year": 2014, "stage": "final", "home_code": "GER", "away_code": "ARG"}
+  },
+  {
+    "id": "wc_2014_sf_ger_bra",
+    "text": "2014 FIFA World Cup Semi-final — Germany vs Brazil at Estádio Governador Magalhães Pinto (Mineirão), Belo Horizonte. Result: 7-1. Known as the Mineirazo, this remains the heaviest defeat Brazil have ever suffered at home and one of the most shocking results in World Cup history. Germany scored four goals in six minutes between the 23rd and 29th minute through Thomas Müller (2), Miroslav Klose, and Toni Kroos (2). Müller finished with a hat-trick; Klose broke the all-time World Cup scoring record with his 16th goal. Brazil were without injured Neymar and captain Thiago Silva (suspended) and collapsed psychologically after the first goal.",
+    "metadata": {"year": 2014, "stage": "sf", "home_code": "GER", "away_code": "BRA"}
+  },
+  {
+    "id": "wc_2014_sf_arg_ned",
+    "text": "2014 FIFA World Cup Semi-final — Argentina vs Netherlands at Arena de São Paulo. Result: 0-0 AET, Argentina won 4-2 on penalties. A cagey match in which neither side created many clear chances. Netherlands manager Louis van Gaal famously brought on goalkeeper Tim Krul as a specialist penalty stopper, but Argentina's Sergio Romero saved from Vlaar and Sneijder. Messi scored Argentina's first penalty as they progressed to their third World Cup final. Netherlands' tournament ended — their third successive semi-final exit (2006, 2010, 2014).",
+    "metadata": {"year": 2014, "stage": "sf", "home_code": "ARG", "away_code": "NED"}
+  },
+  {
+    "id": "wc_2010_final_esp_ned",
+    "text": "2010 FIFA World Cup Final — Spain vs Netherlands at Soccer City, Johannesburg. Result: 1-0 AET. Spain became world champions for the first time through Andrés Iniesta's goal in the 116th minute. The match was marred by physical play from Netherlands, with Nigel de Jong's kung-fu kick on Xabi Alonso escaping a red card. Howard Webb issued a record 14 yellow cards and one red (John Heitinga). Spain's tiki-taka possession style, built on the Barcelona spine of Xavi, Iniesta, and Busquets, was too good even in a low-quality final. David Villa was Spain's top scorer with 5 goals in the tournament.",
+    "metadata": {"year": 2010, "stage": "final", "home_code": "ESP", "away_code": "NED"}
+  },
+  {
+    "id": "wc_2010_sf_ger_esp",
+    "text": "2010 FIFA World Cup Semi-final — Germany vs Spain at Moses Mabhida Stadium, Durban. Result: 0-1. Carles Puyol's powerful header from a corner in the 73rd minute gave Spain a hard-fought victory over the tournament's surprise package Germany. Spain controlled possession throughout but Germany threatened on the counter with Thomas Müller and Miroslav Klose. Goalkeeper Iker Casillas made a fine save from Klose late on to preserve the lead. Germany had scored 12 goals in their previous four matches but were shut out completely by Spain's pressing and positional play.",
+    "metadata": {"year": 2010, "stage": "sf", "home_code": "GER", "away_code": "ESP"}
+  },
+  {
+    "id": "wc_2006_final_ita_fra",
+    "text": "2006 FIFA World Cup Final — Italy vs France at Olympiastadion, Berlin. Result: 1-1 AET, Italy won 5-3 on penalties. The match is remembered above all for Zinédine Zidane's headbutt on Marco Materazzi in extra time, leading to the French captain's red card and his final act in professional football. Materazzi had equalised Italy's Pirlo-assisted Zidane penalty goal with a header. Andrea Pirlo, Fabio Cannavaro, and Gianluigi Buffon were outstanding throughout the tournament for Italy. Fabio Cannavaro won the Golden Ball; Italy lifted their fourth World Cup.",
+    "metadata": {"year": 2006, "stage": "final", "home_code": "ITA", "away_code": "FRA"}
+  },
+  {
+    "id": "wc_2006_sf_ger_ita",
+    "text": "2006 FIFA World Cup Semi-final — Germany vs Italy at Signal Iduna Park, Dortmund. Result: 0-2 AET. Two goals in the final two minutes of extra time from Fabio Grosso and Alessandro Del Piero broke German hearts in front of their home crowd. Germany had been the surprise package of the tournament under Jürgen Klinsmann, reaching the semis on home soil, but were unable to convert their chances against Italy's disciplined Cannavaro-Nesta defensive partnership. The match is remembered as one of the greatest of all time for its dramatic late goals.",
+    "metadata": {"year": 2006, "stage": "sf", "home_code": "GER", "away_code": "ITA"}
+  },
+  {
+    "id": "wc_2006_qf_ger_arg",
+    "text": "2006 FIFA World Cup Quarter-final — Germany vs Argentina at Olympiastadion, Berlin. Result: 1-1 AET, Germany won 4-2 on penalties. Roberto Ayala headed Argentina in front but substitute Miroslav Klose equalised to force extra time. In the shootout Germany held their nerve in front of their home fans; Jens Lehmann had been given a sheet of paper beforehand with predictions of where Argentine penalty-takers would aim — he saved Ayala and Cambiasso. Argentina's elimination despite playing the better football was a major talking point.",
+    "metadata": {"year": 2006, "stage": "qf", "home_code": "GER", "away_code": "ARG"}
+  },
+  {
+    "id": "wc_2002_final_bra_ger",
+    "text": "2002 FIFA World Cup Final — Brazil vs Germany at International Stadium Yokohama, Japan. Result: 2-0. Ronaldo, who had suffered a mysterious convulsive episode on the eve of the 1998 final only to play and struggle, came back to score twice in the second half and lift Brazil to their fifth World Cup title. Ronaldo finished as the tournament's top scorer with 8 goals. Germany, who had reached the final as surprise qualifiers from a tough group, were well beaten. Brazil's fluent attacking play featuring Ronaldo, Ronaldinho, Rivaldo, and Roberto Carlos was the hallmark of this tournament.",
+    "metadata": {"year": 2002, "stage": "final", "home_code": "BRA", "away_code": "GER"}
+  },
+  {
+    "id": "wc_1998_final_fra_bra",
+    "text": "1998 FIFA World Cup Final — France vs Brazil at Stade de France, Saint-Denis. Result: 3-0. Brazil arrived as reigning champions and favourites, but Ronaldo's mysterious pre-match health scare destabilised the squad. Zinédine Zidane headed France in front twice from corners by half-time; Emmanuel Petit added a third in injury time. France's triumph in front of their home crowd was greeted with scenes of national celebration unseen since World War II. Didier Deschamps became the only player to later manage a World Cup winning France team (2018). Zidane was named in the tournament's All-Star XI.",
+    "metadata": {"year": 1998, "stage": "final", "home_code": "FRA", "away_code": "BRA"}
+  },
+  {
+    "id": "wc_1986_qf_arg_eng",
+    "text": "1986 FIFA World Cup Quarter-final — Argentina vs England at Estadio Azteca, Mexico City. Result: 2-1. The match produced both the most controversial and the most celebrated goals in World Cup history within three minutes of each other. Diego Maradona punched the ball in with his left hand for the first goal — later described by him as 'the Hand of God'. Then, from inside his own half, Maradona beat five England outfield players and goalkeeper Peter Shilton in a 60-metre run to score what was voted the Goal of the Century in a 2002 FIFA poll. England pulled one back through Gary Lineker but Argentina held on. Maradona finished the tournament with 5 goals and 5 assists.",
+    "metadata": {"year": 1986, "stage": "qf", "home_code": "ARG", "away_code": "ENG"}
+  }
+]

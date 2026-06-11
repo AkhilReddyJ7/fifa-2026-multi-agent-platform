@@ -45,10 +45,25 @@ _LOOKUP_RE = re.compile(
 )
 
 _TEAM_CODES_RE = re.compile(r"\b([A-Z]{2,3})\b")
+
+# All 48 FIFA 2026 World Cup qualified teams.
+# Kept in sync with scripts/seed_data.py TEAMS list.
 _KNOWN_CODES = {
-    "ARG", "AUS", "BEL", "BRA", "CAN", "COL", "CRO", "ECU",
-    "ENG", "ESP", "FRA", "GER", "ITA", "JPN", "KOR", "KSA",
-    "MAR", "MEX", "NED", "POR", "SEN", "SUI", "URU", "USA",
+    # UEFA (16)
+    "AUT", "BEL", "CRO", "DEN", "ENG", "ESP", "FRA", "GER",
+    "ITA", "NED", "POL", "POR", "SRB", "SUI", "TUR", "UKR",
+    # CONMEBOL (6)
+    "ARG", "BRA", "CHL", "COL", "ECU", "URU",
+    # CONCACAF (6)
+    "CAN", "CRC", "JAM", "MEX", "PAN", "USA",
+    # CAF (9)
+    "CMR", "CIV", "EGY", "GHA", "MAR", "NGA", "RSA", "SEN", "TUN",
+    # AFC (8)
+    "AUS", "IDN", "IRN", "IRQ", "JPN", "KOR", "KSA", "QAT",
+    # OFC (1)
+    "NZL",
+    # Inter-confederation (2)
+    "UAE", "VEN",
 }
 
 
