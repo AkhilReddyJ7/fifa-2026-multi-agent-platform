@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from typing import AsyncGenerator
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -184,7 +184,7 @@ async def get_session(
     )
 
 
-@router.delete("/{session_uuid}", status_code=204, summary="Delete a chat session")
+@router.delete("/{session_uuid}", status_code=204, response_class=Response, summary="Delete a chat session")
 async def delete_session(
     session_uuid: str,
     db: AsyncSession = Depends(get_db),
