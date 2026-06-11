@@ -9,6 +9,13 @@ WORKDIR /app
 
 # ── Dependencies layer ────────────────────────────────────────────────────────
 FROM base AS deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc \
+        g++ \
+        cmake \
+        python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
