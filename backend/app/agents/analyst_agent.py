@@ -62,8 +62,10 @@ async def analyst_node(state: PlatformState) -> Dict[str, Any]:
     t0 = time.monotonic()
 
     context = _build_context(state)
+    history = state.get("history", [])
     messages = [
         {"role": "system", "content": f"{SYSTEM_PROMPT}\n\nData context:\n{context}"},
+        *history,
         {"role": "user", "content": state.get("query", "Provide a football analysis.")},
     ]
 
@@ -87,8 +89,10 @@ async def analyst_node(state: PlatformState) -> Dict[str, Any]:
 async def analyst_stream(state: PlatformState) -> AsyncIterator[str]:
     """Streaming version of analyst — yields text chunks for SSE."""
     context = _build_context(state)
+    history = state.get("history", [])
     messages = [
         {"role": "system", "content": f"{SYSTEM_PROMPT}\n\nData context:\n{context}"},
+        *history,
         {"role": "user", "content": state.get("query", "Provide a football analysis.")},
     ]
     async for chunk in chat_stream(messages, temperature=0.4):

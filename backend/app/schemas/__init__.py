@@ -1,3 +1,4 @@
+from app.schemas.chat import ChatMessageRead, ChatSessionRead
 from app.schemas.common import ErrorResponse, HealthResponse
 from app.schemas.matches import MatchCreate, MatchList, MatchRead, TeamStatsRead
 from app.schemas.predictions import PredictionRead, PredictionRequest, PredictionResponse
@@ -5,6 +6,8 @@ from app.schemas.simulations import SimulationRead, SimulationRequest, Simulatio
 from app.schemas.teams import PlayerCreate, PlayerRead, TeamCreate, TeamList, TeamRead, TeamUpdate
 
 __all__ = [
+    "ChatMessageRead",
+    "ChatSessionRead",
     "ErrorResponse",
     "HealthResponse",
     "MatchCreate",

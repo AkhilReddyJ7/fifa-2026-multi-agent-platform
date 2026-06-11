@@ -21,6 +21,7 @@ class PlatformState(TypedDict):
     query: str
     intent: str                         # predict | simulate | analyze | lookup | chat
     team_codes: List[str]               # extracted team codes e.g. ["BRA", "ARG"]
+    history: List[Dict[str, str]]       # prior turns [{"role": "user"|"assistant", "content": "…"}]
 
     # ── Agent outputs (written by specialist nodes) ───────────────────────────
     team_data: Dict[str, Any]           # Stats Agent → raw team stats + h2h
@@ -36,9 +37,13 @@ class PlatformState(TypedDict):
     trace: Annotated[List[AgentTrace], operator.add]
 
 
-def initial_state(query: str) -> PlatformState:
+def initial_state(
+    query: str,
+    history: List[Dict[str, str]] | None = None,
+) -> PlatformState:
     return PlatformState(
         query=query,
+        history=history or [],
         intent="",
         team_codes=[],
         team_data={},
