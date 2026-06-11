@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """FIFA 2026 Multi-Agent Intelligence Platform — API entrypoint."""
+
+from __future__ import annotations
 
 import structlog
 from fastapi import FastAPI
