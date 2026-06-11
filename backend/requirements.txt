@@ -18,7 +18,7 @@ prometheus-fastapi-instrumentator==7.0.0
 
 # Phase 2 — Agents & ML
 langgraph==0.2.28
-langchain-core==0.2.38
+langchain-core==0.2.39
 openai==1.40.0
 sse-starlette==2.1.3
 
