@@ -141,7 +141,10 @@ class Prediction(Base):
     __tablename__ = "predictions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    match_id: Mapped[int] = mapped_column(Integer, ForeignKey("matches.id", ondelete="CASCADE"), nullable=False, unique=True, index=True)
+    match_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("matches.id", ondelete="CASCADE"), nullable=True, unique=True, index=True)
+    home_team_code: Mapped[Optional[str]] = mapped_column(String(3), index=True)
+    away_team_code: Mapped[Optional[str]] = mapped_column(String(3), index=True)
+    stage: Mapped[Optional[str]] = mapped_column(String(30))
     home_win_prob: Mapped[float] = mapped_column(Float, nullable=False)
     draw_prob: Mapped[float] = mapped_column(Float, nullable=False)
     away_win_prob: Mapped[float] = mapped_column(Float, nullable=False)
@@ -149,10 +152,12 @@ class Prediction(Base):
     predicted_away_goals: Mapped[Optional[float]] = mapped_column(Float)
     confidence: Mapped[Optional[float]] = mapped_column(Float)
     model_version: Mapped[str] = mapped_column(String(30), default="v1")
+    explainability: Mapped[Optional[str]] = mapped_column(Text)
+    analyst_summary: Mapped[Optional[str]] = mapped_column(Text)
     shap_values: Mapped[Optional[dict]] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-    match: Mapped[Match] = relationship("Match", back_populates="prediction")
+    match: Mapped[Optional[Match]] = relationship("Match", back_populates="prediction")
 
 
 # ── Tournament Simulation Runs ────────────────────────────────────────────────
@@ -165,7 +170,12 @@ class SimulationRun(Base):
     n_simulations: Mapped[int] = mapped_column(Integer, nullable=False)
     params: Mapped[Optional[dict]] = mapped_column(JSON)
     winner_team_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("teams.id"))
+    win_probabilities: Mapped[Optional[dict]] = mapped_column(JSON)
+    final_probabilities: Mapped[Optional[dict]] = mapped_column(JSON)
+    semifinal_probabilities: Mapped[Optional[dict]] = mapped_column(JSON)
+    top_5_favorites: Mapped[Optional[list]] = mapped_column(JSON)
     bracket: Mapped[Optional[dict]] = mapped_column(JSON)
+    analyst_summary: Mapped[Optional[str]] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
