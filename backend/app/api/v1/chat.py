@@ -188,7 +188,7 @@ async def get_session(
 async def delete_session(
     session_uuid: str,
     db: AsyncSession = Depends(get_db),
-) -> None:
+) -> Response:
     """Delete a session and all its messages (cascade)."""
     result = await db.execute(
         select(ChatSession).where(ChatSession.session_uuid == session_uuid)
@@ -198,3 +198,4 @@ async def delete_session(
         raise HTTPException(status_code=404, detail=f"Session {session_uuid!r} not found")
     await db.delete(session)
     await db.flush()
+    return Response(status_code=204)
