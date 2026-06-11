@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.orchestrator import run_query
@@ -38,38 +39,56 @@ async def predict_match(
     if pred.get("error"):
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=pred["error"])
 
+    home_team_code = pred.get("home_code", home)
+    away_team_code = pred.get("away_code", away)
+    home_win_prob = pred.get("home_win_prob", 0.0)
+    draw_prob = pred.get("draw_prob", 0.0)
+    away_win_prob = pred.get("away_win_prob", 0.0)
+    predicted_home_goals = pred.get("expected_home_goals")
+    predicted_away_goals = pred.get("expected_away_goals")
+    confidence = pred.get("confidence")
+    model_version = pred.get("model_version", "v1")
+    explainability = pred.get("explainability") or None
+    analyst_summary = final_state.get("response") or None
+
     row = Prediction(
-        home_team_code=pred.get("home_code", home),
-        away_team_code=pred.get("away_code", away),
+        home_team_code=home_team_code,
+        away_team_code=away_team_code,
         stage=payload.stage,
-        home_win_prob=pred.get("home_win_prob", 0.0),
-        draw_prob=pred.get("draw_prob", 0.0),
-        away_win_prob=pred.get("away_win_prob", 0.0),
-        predicted_home_goals=pred.get("expected_home_goals"),
-        predicted_away_goals=pred.get("expected_away_goals"),
-        confidence=pred.get("confidence"),
-        model_version=pred.get("model_version", "v1"),
-        explainability=pred.get("explainability", ""),
-        analyst_summary=final_state.get("response", ""),
+        home_win_prob=home_win_prob,
+        draw_prob=draw_prob,
+        away_win_prob=away_win_prob,
+        predicted_home_goals=predicted_home_goals,
+        predicted_away_goals=predicted_away_goals,
+        confidence=confidence,
+        model_version=model_version,
+        explainability=explainability,
+        analyst_summary=analyst_summary,
     )
-    db.add(row)
-    await db.flush()
+    try:
+        db.add(row)
+        await db.flush()
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Prediction conflicts with an existing record.",
+        )
 
     return PredictionResponse(
         id=row.id,
         home_team=pred.get("home_team", home),
         away_team=pred.get("away_team", away),
-        home_code=pred.get("home_code", home),
-        away_code=pred.get("away_code", away),
-        home_win_prob=pred.get("home_win_prob", 0.0),
-        draw_prob=pred.get("draw_prob", 0.0),
-        away_win_prob=pred.get("away_win_prob", 0.0),
-        expected_home_goals=pred.get("expected_home_goals", 0.0),
-        expected_away_goals=pred.get("expected_away_goals", 0.0),
-        confidence=pred.get("confidence", 0.0),
-        model_version=pred.get("model_version", "unknown"),
-        explainability=pred.get("explainability", ""),
-        analyst_summary=final_state.get("response", ""),
+        home_team_code=home_team_code,
+        away_team_code=away_team_code,
+        home_win_prob=home_win_prob,
+        draw_prob=draw_prob,
+        away_win_prob=away_win_prob,
+        predicted_home_goals=predicted_home_goals,
+        predicted_away_goals=predicted_away_goals,
+        confidence=confidence,
+        model_version=model_version,
+        explainability=explainability,
+        analyst_summary=analyst_summary,
         agent_trace=final_state.get("trace", []),
     )
 

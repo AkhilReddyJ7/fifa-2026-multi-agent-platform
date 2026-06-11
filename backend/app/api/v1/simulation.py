@@ -6,6 +6,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.orchestrator import run_query
@@ -45,8 +46,14 @@ async def run_simulation(
         bracket=sim.get("expected_bracket", {}),
         analyst_summary=final_state.get("response", ""),
     )
-    db.add(row)
-    await db.flush()
+    try:
+        db.add(row)
+        await db.flush()
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Simulation run conflicts with an existing record.",
+        )
 
     return SimulationResponse(
         id=row.id,

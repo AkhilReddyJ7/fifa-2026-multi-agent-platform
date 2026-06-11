@@ -53,8 +53,8 @@ async def test_predict_saves_and_returns_id(client: AsyncClient) -> None:
     assert "id" in body
     assert isinstance(body["id"], int)
     assert body["id"] > 0
-    assert body["home_code"] == "BRA"
-    assert body["away_code"] == "ARG"
+    assert body["home_team_code"] == "BRA"
+    assert body["away_team_code"] == "ARG"
     assert abs(body["home_win_prob"] + body["draw_prob"] + body["away_win_prob"] - 1.0) < 0.01
 
 
@@ -108,3 +108,75 @@ async def test_predict_persists_analyst_summary(client: AsyncClient) -> None:
 
     get_r = await client.get(f"/api/v1/predictions/{pred_id}")
     assert get_r.json()["analyst_summary"] == "Brazil vs Argentina: expect a tight contest."
+
+
+@pytest.mark.asyncio
+async def test_predict_post_and_get_field_parity(client: AsyncClient) -> None:
+    """POST response and GET response for the same record must agree on all shared fields."""
+    await _ensure_pred_teams(client)
+    with patch("app.api.v1.predictions.run_query", new=AsyncMock(return_value=MOCK_PRED_STATE)):
+        post_r = await client.post(
+            "/api/v1/predictions",
+            json={"home_team": "BRA", "away_team": "ARG", "stage": "final"},
+        )
+    assert post_r.status_code == 200
+    post_body = post_r.json()
+    pred_id = post_body["id"]
+
+    get_r = await client.get(f"/api/v1/predictions/{pred_id}")
+    assert get_r.status_code == 200
+    get_body = get_r.json()
+
+    shared_fields = [
+        "id",
+        "home_team_code",
+        "away_team_code",
+        "home_win_prob",
+        "draw_prob",
+        "away_win_prob",
+        "predicted_home_goals",
+        "predicted_away_goals",
+        "confidence",
+        "model_version",
+        "explainability",
+        "analyst_summary",
+    ]
+    for field in shared_fields:
+        assert post_body[field] == get_body[field], f"POST/GET mismatch on '{field}'"
+
+
+@pytest.mark.asyncio
+async def test_multiple_predictions_without_match_id(client: AsyncClient) -> None:
+    """Nullable match_id allows multiple standalone predictions for the same teams."""
+    await _ensure_pred_teams(client)
+    with patch("app.api.v1.predictions.run_query", new=AsyncMock(return_value=MOCK_PRED_STATE)):
+        r1 = await client.post(
+            "/api/v1/predictions",
+            json={"home_team": "BRA", "away_team": "ARG", "stage": "group"},
+        )
+        r2 = await client.post(
+            "/api/v1/predictions",
+            json={"home_team": "BRA", "away_team": "ARG", "stage": "r16"},
+        )
+    assert r1.status_code == 200
+    assert r2.status_code == 200
+    assert r1.json()["id"] != r2.json()["id"]
+
+
+@pytest.mark.asyncio
+async def test_predict_integrity_error_returns_409(client: AsyncClient) -> None:
+    """DB constraint violations must surface as 409, not 500."""
+    await _ensure_pred_teams(client)
+    from sqlalchemy.exc import IntegrityError as SAIntegrityError
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    async def _raise(*args, **kwargs):
+        raise SAIntegrityError("stmt", {}, Exception("UNIQUE constraint failed"))
+
+    with patch("app.api.v1.predictions.run_query", new=AsyncMock(return_value=MOCK_PRED_STATE)):
+        with patch.object(AsyncSession, "flush", _raise):
+            r = await client.post(
+                "/api/v1/predictions",
+                json={"home_team": "BRA", "away_team": "ARG", "stage": "group"},
+            )
+    assert r.status_code == 409

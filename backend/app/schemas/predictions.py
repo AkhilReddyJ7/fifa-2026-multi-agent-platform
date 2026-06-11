@@ -17,17 +17,17 @@ class PredictionResponse(BaseModel):
     id: int
     home_team: str
     away_team: str
-    home_code: str
-    away_code: str
+    home_team_code: str
+    away_team_code: str
     home_win_prob: float
     draw_prob: float
     away_win_prob: float
-    expected_home_goals: float
-    expected_away_goals: float
-    confidence: float
+    predicted_home_goals: float | None = None
+    predicted_away_goals: float | None = None
+    confidence: float | None = None
     model_version: str
-    explainability: str
-    analyst_summary: str
+    explainability: str | None = None
+    analyst_summary: str | None = None
     agent_trace: list
 
 

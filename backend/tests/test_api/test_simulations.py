@@ -81,3 +81,18 @@ async def test_simulation_persists_expected_bracket(client: AsyncClient) -> None
     get_r = await client.get(f"/api/v1/simulation/{run_uuid}")
     bracket = get_r.json()["expected_bracket"]
     assert bracket["winner"] == "BRA"
+
+
+@pytest.mark.asyncio
+async def test_simulation_integrity_error_returns_409(client: AsyncClient) -> None:
+    """DB constraint violations must surface as 409, not 500."""
+    from sqlalchemy.exc import IntegrityError as SAIntegrityError
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    async def _raise(*args, **kwargs):
+        raise SAIntegrityError("stmt", {}, Exception("UNIQUE constraint failed"))
+
+    with patch("app.api.v1.simulation.run_query", new=AsyncMock(return_value=MOCK_SIM_STATE)):
+        with patch.object(AsyncSession, "flush", _raise):
+            r = await client.post("/api/v1/simulation", json={"n_simulations": 100})
+    assert r.status_code == 409
