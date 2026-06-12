@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import time
 from typing import Any, Dict, List
 
@@ -56,7 +57,7 @@ async def simulation_node(state: PlatformState) -> Dict[str, Any]:
             )],
         }
 
-    result = run_simulation(teams=teams, n_simulations=n_sims, seed=seed)
+    result = await asyncio.to_thread(run_simulation, teams=teams, n_simulations=n_sims, seed=seed)
 
     sim_out = {
         "n_simulations": result.n_simulations,

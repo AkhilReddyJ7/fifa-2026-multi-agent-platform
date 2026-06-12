@@ -121,6 +121,7 @@ async def chat_stream_endpoint(
         from app.agents.orchestrator import orchestrator_node
         from app.agents.prediction_agent import prediction_node
         from app.agents.research_agent import research_node
+        from app.agents.simulation_agent import simulation_node
         from app.agents.stats_agent import stats_node
 
         state = initial_state(payload.message, history=history)
@@ -130,6 +131,8 @@ async def chat_stream_endpoint(
         intent = state.get("intent", "chat")
         if intent == "predict" and len(state.get("team_codes", [])) >= 2:
             state = {**state, **(await prediction_node(state))}  # type: ignore[typeddict-item]
+        elif intent == "simulate":
+            state = {**state, **(await simulation_node(state))}  # type: ignore[typeddict-item]
 
         state = {**state, **(await research_node(state))}  # type: ignore[typeddict-item]
 

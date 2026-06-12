@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -160,3 +161,83 @@ async def test_history_passed_to_orchestrator_on_second_turn(client: AsyncClient
     assert len(extra["history"]) >= 2  # at least user + assistant from turn 1
     assert extra["history"][0]["role"] == "user"
     assert extra["history"][0]["content"] == "First turn."
+
+
+# ── Streaming patch targets ───────────────────────────────────────────────────
+
+_ORCH = "app.agents.orchestrator.orchestrator_node"
+_STATS = "app.agents.stats_agent.stats_node"
+_PRED = "app.agents.prediction_agent.prediction_node"
+_SIM = "app.agents.simulation_agent.simulation_node"
+_RESEARCH = "app.agents.research_agent.research_node"
+_ANALYST_STREAM = "app.api.v1.chat.analyst_stream"
+
+
+async def _fake_stream(state):  # noqa: ANN001
+    yield "simulated response"
+
+
+# ── Streaming tests ───────────────────────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_stream_simulate_invokes_simulation_node(client: AsyncClient) -> None:
+    """Streaming with simulate intent must invoke simulation_node (Phase 4A-Lite fix)."""
+    sim_mock = AsyncMock(return_value={"sim_results": {"win_probabilities": {"BRA": 0.2}}, "trace": []})
+    with (
+        patch(_ORCH, new=AsyncMock(return_value={"intent": "simulate", "team_codes": [], "trace": []})),
+        patch(_STATS, new=AsyncMock(return_value={"team_data": {}, "trace": []})),
+        patch(_SIM, new=sim_mock),
+        patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
+        patch(_ANALYST_STREAM, new=_fake_stream),
+    ):
+        r = await client.post("/api/v1/chat/stream", json={"message": "Simulate the 2026 World Cup."})
+
+    assert r.status_code == 200
+    sim_mock.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_stream_predict_does_not_invoke_simulation_node(client: AsyncClient) -> None:
+    """Streaming with predict intent must NOT invoke simulation_node (elif correctness)."""
+    sim_mock = AsyncMock(return_value={"sim_results": {}, "trace": []})
+    pred_mock = AsyncMock(return_value={"prediction": {"home_win_prob": 0.5}, "trace": []})
+    with (
+        patch(_ORCH, new=AsyncMock(return_value={"intent": "predict", "team_codes": ["BRA", "ARG"], "trace": []})),
+        patch(_STATS, new=AsyncMock(return_value={"team_data": {}, "trace": []})),
+        patch(_PRED, new=pred_mock),
+        patch(_SIM, new=sim_mock),
+        patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
+        patch(_ANALYST_STREAM, new=_fake_stream),
+    ):
+        r = await client.post("/api/v1/chat/stream", json={"message": "Predict BRA vs ARG."})
+
+    assert r.status_code == 200
+    pred_mock.assert_awaited_once()
+    sim_mock.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_stream_returns_sse_and_persists_assistant_message(client: AsyncClient) -> None:
+    """Streaming response emits SSE events and persists the assistant message to the DB."""
+    with (
+        patch(_ORCH, new=AsyncMock(return_value={"intent": "chat", "team_codes": [], "trace": []})),
+        patch(_STATS, new=AsyncMock(return_value={"team_data": {}, "trace": []})),
+        patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
+        patch(_ANALYST_STREAM, new=_fake_stream),
+    ):
+        r = await client.post("/api/v1/chat/stream", json={"message": "Hello World Cup!"})
+
+    assert r.status_code == 200
+    text = r.text
+    assert "data: [START]" in text
+    assert "data: [DONE]" in text
+    assert "simulated response" in text
+
+    m = re.search(r'"session_uuid":"([^"]+)"', text)
+    assert m is not None
+    session_uuid = m.group(1)
+
+    get_r = await client.get(f"/api/v1/chat/{session_uuid}")
+    assert get_r.status_code == 200
+    messages = get_r.json()["messages"]
+    assert any(msg["role"] == "assistant" and msg["content"] == "simulated response" for msg in messages)
