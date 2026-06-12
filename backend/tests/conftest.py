@@ -67,3 +67,30 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
         yield ac
 
     app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def authenticated_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+    """Return an AsyncClient pre-authenticated as 'auth-test@example.com'."""
+    from app.main import app
+
+    async def _override_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = _override_db
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        await ac.post(
+            "/api/v1/auth/register",
+            json={"email": "auth-test@example.com", "password": "testpass123"},
+        )
+        r = await ac.post(
+            "/api/v1/auth/login",
+            json={"email": "auth-test@example.com", "password": "testpass123"},
+        )
+        token = r.json()["access_token"]
+        ac.headers.update({"Authorization": f"Bearer {token}"})
+        yield ac
+
+    app.dependency_overrides.clear()

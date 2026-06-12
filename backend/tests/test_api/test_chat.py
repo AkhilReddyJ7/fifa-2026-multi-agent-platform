@@ -29,10 +29,10 @@ _PATCH = "app.api.v1.chat.run_query"
 # ── Tests ─────────────────────────────────────────────────────────────────────
 
 @pytest.mark.asyncio
-async def test_chat_no_session_id_creates_session(client: AsyncClient) -> None:
+async def test_chat_no_session_id_creates_session(authenticated_client: AsyncClient) -> None:
     """POST without session_id → new UUID session returned."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r = await client.post("/api/v1/chat", json={"message": "Tell me about Brazil."})
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Tell me about Brazil."})
     assert r.status_code == 200
     body = r.json()
     assert "session_id" in body
@@ -41,36 +41,36 @@ async def test_chat_no_session_id_creates_session(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_chat_resumes_existing_session(client: AsyncClient) -> None:
+async def test_chat_resumes_existing_session(authenticated_client: AsyncClient) -> None:
     """POST with a known session_uuid adds to that session (same UUID returned)."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r1 = await client.post("/api/v1/chat", json={"message": "First message."})
+        r1 = await authenticated_client.post("/api/v1/chat", json={"message": "First message."})
     session_id = r1.json()["session_id"]
 
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r2 = await client.post("/api/v1/chat", json={"message": "Follow-up.", "session_id": session_id})
+        r2 = await authenticated_client.post("/api/v1/chat", json={"message": "Follow-up.", "session_id": session_id})
     assert r2.status_code == 200
     assert r2.json()["session_id"] == session_id
 
 
 @pytest.mark.asyncio
-async def test_chat_unknown_session_id_creates_new(client: AsyncClient) -> None:
+async def test_chat_unknown_session_id_creates_new(authenticated_client: AsyncClient) -> None:
     """POST with an unrecognised session_uuid silently creates a new session."""
     unknown = "00000000-0000-0000-0000-000000000000"
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r = await client.post("/api/v1/chat", json={"message": "Hello.", "session_id": unknown})
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Hello.", "session_id": unknown})
     assert r.status_code == 200
     assert r.json()["session_id"] != unknown
 
 
 @pytest.mark.asyncio
-async def test_messages_persisted_with_correct_roles(client: AsyncClient) -> None:
+async def test_messages_persisted_with_correct_roles(authenticated_client: AsyncClient) -> None:
     """After a chat POST, GET session shows user and assistant messages in order."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r = await client.post("/api/v1/chat", json={"message": "Who will win the World Cup?"})
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Who will win the World Cup?"})
     session_id = r.json()["session_id"]
 
-    get_r = await client.get(f"/api/v1/chat/{session_id}")
+    get_r = await authenticated_client.get(f"/api/v1/chat/{session_id}")
     assert get_r.status_code == 200
     messages = get_r.json()["messages"]
     assert len(messages) == 2
@@ -81,13 +81,13 @@ async def test_messages_persisted_with_correct_roles(client: AsyncClient) -> Non
 
 
 @pytest.mark.asyncio
-async def test_agent_trace_persisted_on_assistant_message(client: AsyncClient) -> None:
+async def test_agent_trace_persisted_on_assistant_message(authenticated_client: AsyncClient) -> None:
     """agent_trace JSON is stored on the assistant ChatMessage row."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r = await client.post("/api/v1/chat", json={"message": "Predict ARG vs BRA."})
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Predict ARG vs BRA."})
     session_id = r.json()["session_id"]
 
-    get_r = await client.get(f"/api/v1/chat/{session_id}")
+    get_r = await authenticated_client.get(f"/api/v1/chat/{session_id}")
     messages = get_r.json()["messages"]
     assistant = next(m for m in messages if m["role"] == "assistant")
     assert isinstance(assistant["agent_trace"], list)
@@ -96,16 +96,16 @@ async def test_agent_trace_persisted_on_assistant_message(client: AsyncClient) -
 
 
 @pytest.mark.asyncio
-async def test_get_session_returns_ordered_history(client: AsyncClient) -> None:
+async def test_get_session_returns_ordered_history(authenticated_client: AsyncClient) -> None:
     """Two chat turns produce 4 messages (user+assistant×2) in chronological order."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r1 = await client.post("/api/v1/chat", json={"message": "First."})
+        r1 = await authenticated_client.post("/api/v1/chat", json={"message": "First."})
     session_id = r1.json()["session_id"]
 
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        await client.post("/api/v1/chat", json={"message": "Second.", "session_id": session_id})
+        await authenticated_client.post("/api/v1/chat", json={"message": "Second.", "session_id": session_id})
 
-    get_r = await client.get(f"/api/v1/chat/{session_id}")
+    get_r = await authenticated_client.get(f"/api/v1/chat/{session_id}")
     assert get_r.status_code == 200
     messages = get_r.json()["messages"]
     assert len(messages) == 4
@@ -116,43 +116,43 @@ async def test_get_session_returns_ordered_history(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_session_not_found(client: AsyncClient) -> None:
+async def test_get_session_not_found(authenticated_client: AsyncClient) -> None:
     """GET unknown session_uuid → 404."""
-    r = await client.get("/api/v1/chat/00000000-0000-0000-0000-999999999999")
+    r = await authenticated_client.get("/api/v1/chat/00000000-0000-0000-0000-999999999999")
     assert r.status_code == 404
 
 
 @pytest.mark.asyncio
-async def test_delete_session_removes_it(client: AsyncClient) -> None:
+async def test_delete_session_removes_it(authenticated_client: AsyncClient) -> None:
     """DELETE session → 204; subsequent GET → 404."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r = await client.post("/api/v1/chat", json={"message": "Delete me."})
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Delete me."})
     session_id = r.json()["session_id"]
 
-    del_r = await client.delete(f"/api/v1/chat/{session_id}")
+    del_r = await authenticated_client.delete(f"/api/v1/chat/{session_id}")
     assert del_r.status_code == 204
 
-    get_r = await client.get(f"/api/v1/chat/{session_id}")
+    get_r = await authenticated_client.get(f"/api/v1/chat/{session_id}")
     assert get_r.status_code == 404
 
 
 @pytest.mark.asyncio
-async def test_delete_session_not_found(client: AsyncClient) -> None:
+async def test_delete_session_not_found(authenticated_client: AsyncClient) -> None:
     """DELETE unknown session_uuid → 404."""
-    r = await client.delete("/api/v1/chat/00000000-0000-0000-0000-888888888888")
+    r = await authenticated_client.delete("/api/v1/chat/00000000-0000-0000-0000-888888888888")
     assert r.status_code == 404
 
 
 @pytest.mark.asyncio
-async def test_history_passed_to_orchestrator_on_second_turn(client: AsyncClient) -> None:
+async def test_history_passed_to_orchestrator_on_second_turn(authenticated_client: AsyncClient) -> None:
     """On a second turn, run_query receives prior messages in extra_state['history']."""
     with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
-        r1 = await client.post("/api/v1/chat", json={"message": "First turn."})
+        r1 = await authenticated_client.post("/api/v1/chat", json={"message": "First turn."})
     session_id = r1.json()["session_id"]
 
     second_mock = AsyncMock(return_value=MOCK_CHAT_STATE)
     with patch(_PATCH, new=second_mock):
-        await client.post("/api/v1/chat", json={"message": "Second turn.", "session_id": session_id})
+        await authenticated_client.post("/api/v1/chat", json={"message": "Second turn.", "session_id": session_id})
 
     second_mock.assert_awaited_once()
     _, kwargs = second_mock.call_args
@@ -161,6 +161,35 @@ async def test_history_passed_to_orchestrator_on_second_turn(client: AsyncClient
     assert len(extra["history"]) >= 2  # at least user + assistant from turn 1
     assert extra["history"][0]["role"] == "user"
     assert extra["history"][0]["content"] == "First turn."
+
+
+@pytest.mark.asyncio
+async def test_session_id_from_other_user_creates_new_session(authenticated_client: AsyncClient) -> None:
+    """Using another user's session_uuid must create a new session, not hijack it."""
+    with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
+        r1 = await authenticated_client.post("/api/v1/chat", json={"message": "User A's message."})
+    user_a_session_id = r1.json()["session_id"]
+
+    # Register and log in as User B using the same test client
+    await authenticated_client.post(
+        "/api/v1/auth/register",
+        json={"email": "userb@example.com", "password": "testpass123"},
+    )
+    login_r = await authenticated_client.post(
+        "/api/v1/auth/login",
+        json={"email": "userb@example.com", "password": "testpass123"},
+    )
+    user_b_token = login_r.json()["access_token"]
+
+    # User B sends a message using User A's session_id — should get a new session
+    with patch(_PATCH, new=AsyncMock(return_value=MOCK_CHAT_STATE)):
+        r2 = await authenticated_client.post(
+            "/api/v1/chat",
+            json={"message": "User B's message.", "session_id": user_a_session_id},
+            headers={"Authorization": f"Bearer {user_b_token}"},
+        )
+    assert r2.status_code == 200
+    assert r2.json()["session_id"] != user_a_session_id
 
 
 # ── Streaming patch targets ───────────────────────────────────────────────────
@@ -180,7 +209,7 @@ async def _fake_stream(state):  # noqa: ANN001
 # ── Streaming tests ───────────────────────────────────────────────────────────
 
 @pytest.mark.asyncio
-async def test_stream_simulate_invokes_simulation_node(client: AsyncClient) -> None:
+async def test_stream_simulate_invokes_simulation_node(authenticated_client: AsyncClient) -> None:
     """Streaming with simulate intent must invoke simulation_node (Phase 4A-Lite fix)."""
     sim_mock = AsyncMock(return_value={"sim_results": {"win_probabilities": {"BRA": 0.2}}, "trace": []})
     with (
@@ -190,14 +219,14 @@ async def test_stream_simulate_invokes_simulation_node(client: AsyncClient) -> N
         patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
         patch(_ANALYST_STREAM, new=_fake_stream),
     ):
-        r = await client.post("/api/v1/chat/stream", json={"message": "Simulate the 2026 World Cup."})
+        r = await authenticated_client.post("/api/v1/chat/stream", json={"message": "Simulate the 2026 World Cup."})
 
     assert r.status_code == 200
     sim_mock.assert_awaited_once()
 
 
 @pytest.mark.asyncio
-async def test_stream_predict_does_not_invoke_simulation_node(client: AsyncClient) -> None:
+async def test_stream_predict_does_not_invoke_simulation_node(authenticated_client: AsyncClient) -> None:
     """Streaming with predict intent must NOT invoke simulation_node (elif correctness)."""
     sim_mock = AsyncMock(return_value={"sim_results": {}, "trace": []})
     pred_mock = AsyncMock(return_value={"prediction": {"home_win_prob": 0.5}, "trace": []})
@@ -209,7 +238,7 @@ async def test_stream_predict_does_not_invoke_simulation_node(client: AsyncClien
         patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
         patch(_ANALYST_STREAM, new=_fake_stream),
     ):
-        r = await client.post("/api/v1/chat/stream", json={"message": "Predict BRA vs ARG."})
+        r = await authenticated_client.post("/api/v1/chat/stream", json={"message": "Predict BRA vs ARG."})
 
     assert r.status_code == 200
     pred_mock.assert_awaited_once()
@@ -217,7 +246,7 @@ async def test_stream_predict_does_not_invoke_simulation_node(client: AsyncClien
 
 
 @pytest.mark.asyncio
-async def test_stream_returns_sse_and_persists_assistant_message(client: AsyncClient) -> None:
+async def test_stream_returns_sse_and_persists_assistant_message(authenticated_client: AsyncClient) -> None:
     """Streaming response emits SSE events and persists the assistant message to the DB."""
     with (
         patch(_ORCH, new=AsyncMock(return_value={"intent": "chat", "team_codes": [], "trace": []})),
@@ -225,7 +254,7 @@ async def test_stream_returns_sse_and_persists_assistant_message(client: AsyncCl
         patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
         patch(_ANALYST_STREAM, new=_fake_stream),
     ):
-        r = await client.post("/api/v1/chat/stream", json={"message": "Hello World Cup!"})
+        r = await authenticated_client.post("/api/v1/chat/stream", json={"message": "Hello World Cup!"})
 
     assert r.status_code == 200
     text = r.text
@@ -237,7 +266,7 @@ async def test_stream_returns_sse_and_persists_assistant_message(client: AsyncCl
     assert m is not None
     session_uuid = m.group(1)
 
-    get_r = await client.get(f"/api/v1/chat/{session_uuid}")
+    get_r = await authenticated_client.get(f"/api/v1/chat/{session_uuid}")
     assert get_r.status_code == 200
     messages = get_r.json()["messages"]
     assert any(msg["role"] == "assistant" and msg["content"] == "simulated response" for msg in messages)

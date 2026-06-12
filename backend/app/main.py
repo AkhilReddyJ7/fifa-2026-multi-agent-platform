@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from app.api.v1 import chat, health, matches, predictions, simulation, teams
+from app.api.v1 import auth, chat, health, matches, predictions, simulation, teams
 from app.core.config import get_settings
 
 log = structlog.get_logger()
@@ -47,6 +47,7 @@ app.include_router(teams.router, prefix=f"{prefix}/teams", tags=["Teams"])
 app.include_router(matches.router, prefix=f"{prefix}/matches", tags=["Matches"])
 app.include_router(predictions.router, prefix=f"{prefix}/predictions", tags=["Predictions"])
 app.include_router(simulation.router, prefix=f"{prefix}/simulation", tags=["Simulation"])
+app.include_router(auth.router, prefix=f"{prefix}/auth", tags=["Auth"])
 app.include_router(chat.router, prefix=f"{prefix}/chat", tags=["Chat"])
 
 

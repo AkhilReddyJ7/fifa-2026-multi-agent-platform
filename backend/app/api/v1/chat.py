@@ -14,8 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agents.analyst_agent import analyst_stream
 from app.agents.orchestrator import run_query
 from app.agents.state import initial_state
-from app.api.deps import get_db
-from app.db.models import ChatMessage, ChatSession
+from app.api.deps import get_current_user, get_db
+from app.db.models import ChatMessage, ChatSession, User
 from app.schemas.chat import ChatMessageRead, ChatSessionRead
 
 router = APIRouter()
@@ -41,16 +41,21 @@ class ChatResponse(BaseModel):
 async def _get_or_create_session(
     session_id: str | None,
     db: AsyncSession,
+    user_id: str | None = None,
 ) -> ChatSession:
-    """Return existing ChatSession by UUID or create a new one."""
+    """Return existing ChatSession by UUID or create a new one.
+
+    If session_id refers to a session owned by a different authenticated user,
+    a new session is created to prevent session hijacking.
+    """
     if session_id:
         result = await db.execute(
             select(ChatSession).where(ChatSession.session_uuid == session_id)
         )
         existing = result.scalar_one_or_none()
-        if existing:
+        if existing and (existing.user_id is None or existing.user_id == user_id):
             return existing
-    new_session = ChatSession(session_uuid=str(uuid.uuid4()))
+    new_session = ChatSession(session_uuid=str(uuid.uuid4()), user_id=user_id)
     db.add(new_session)
     await db.flush()
     return new_session
@@ -74,9 +79,10 @@ async def _load_history(session: ChatSession, db: AsyncSession) -> list[dict[str
 async def chat(
     payload: ChatRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> ChatResponse:
     """Non-streaming chat — persists both turns and returns the complete response."""
-    session = await _get_or_create_session(payload.session_id, db)
+    session = await _get_or_create_session(payload.session_id, db, user_id=current_user.email)
     history = await _load_history(session, db)
 
     db.add(ChatMessage(session_id=session.id, role="user", content=payload.message))
@@ -106,9 +112,10 @@ async def chat(
 async def chat_stream_endpoint(
     payload: ChatRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> StreamingResponse:
     """Streaming chat via SSE — persists both turns; final event carries session_uuid."""
-    session = await _get_or_create_session(payload.session_id, db)
+    session = await _get_or_create_session(payload.session_id, db, user_id=current_user.email)
     history = await _load_history(session, db)
 
     db.add(ChatMessage(session_id=session.id, role="user", content=payload.message))
@@ -160,6 +167,7 @@ async def chat_stream_endpoint(
 async def get_session(
     session_uuid: str,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> ChatSessionRead:
     """Return a chat session and its full message history in chronological order."""
     result = await db.execute(
@@ -167,6 +175,8 @@ async def get_session(
     )
     session = result.scalar_one_or_none()
     if not session:
+        raise HTTPException(status_code=404, detail=f"Session {session_uuid!r} not found")
+    if session.user_id is not None and session.user_id != current_user.email:
         raise HTTPException(status_code=404, detail=f"Session {session_uuid!r} not found")
 
     msgs_result = await db.execute(
@@ -191,6 +201,7 @@ async def get_session(
 async def delete_session(
     session_uuid: str,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> Response:
     """Delete a session and all its messages (cascade)."""
     result = await db.execute(
@@ -198,6 +209,8 @@ async def delete_session(
     )
     session = result.scalar_one_or_none()
     if not session:
+        raise HTTPException(status_code=404, detail=f"Session {session_uuid!r} not found")
+    if session.user_id is not None and session.user_id != current_user.email:
         raise HTTPException(status_code=404, detail=f"Session {session_uuid!r} not found")
     await db.delete(session)
     await db.flush()
