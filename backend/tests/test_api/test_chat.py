@@ -270,3 +270,89 @@ async def test_stream_returns_sse_and_persists_assistant_message(authenticated_c
     assert get_r.status_code == 200
     messages = get_r.json()["messages"]
     assert any(msg["role"] == "assistant" and msg["content"] == "simulated response" for msg in messages)
+
+
+# ── Phase 4B: checkpointing tests ────────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_chat_endpoint_passes_session_uuid_as_thread_id(authenticated_client: AsyncClient) -> None:
+    """POST /api/v1/chat passes the session UUID as thread_id to run_query."""
+    mock = AsyncMock(return_value=MOCK_CHAT_STATE)
+    with patch(_PATCH, new=mock):
+        r = await authenticated_client.post("/api/v1/chat", json={"message": "Hello."})
+    assert r.status_code == 200
+    session_id = r.json()["session_id"]
+
+    mock.assert_awaited_once()
+    call_kwargs = mock.call_args.kwargs
+    assert call_kwargs.get("thread_id") == session_id
+
+
+@pytest.mark.asyncio
+async def test_chat_stream_endpoint_does_not_pass_thread_id(authenticated_client: AsyncClient) -> None:
+    """POST /api/v1/chat/stream does not call run_query (streaming uses manual node chain)."""
+    mock = AsyncMock(return_value=MOCK_CHAT_STATE)
+    with (
+        patch(_PATCH, new=mock),
+        patch(_ORCH, new=AsyncMock(return_value={"intent": "chat", "team_codes": [], "trace": []})),
+        patch(_STATS, new=AsyncMock(return_value={"team_data": {}, "trace": []})),
+        patch(_RESEARCH, new=AsyncMock(return_value={"rag_docs": [], "trace": []})),
+        patch(_ANALYST_STREAM, new=_fake_stream),
+    ):
+        r = await authenticated_client.post("/api/v1/chat/stream", json={"message": "Stream me."})
+
+    assert r.status_code == 200
+    mock.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_multiturn_memory_with_memory_saver(memory_saver, monkeypatch) -> None:
+    """Using MemorySaver, run_query called twice with same thread_id preserves history."""
+    import app.agents.orchestrator as orch_module
+    from app.agents.state import AgentTrace
+
+    thread_id = "multi-turn-memory-456"
+
+    async def _mock_orch(state):
+        return {
+            "intent": "chat",
+            "team_codes": [],
+            "trace": [AgentTrace(agent="orchestrator", input_keys=[], output_keys=[], duration_ms=0.0, notes="")],
+        }
+
+    async def _mock_stats(state):
+        return {
+            "team_data": {},
+            "trace": [AgentTrace(agent="stats", input_keys=[], output_keys=[], duration_ms=0.0, notes="")],
+        }
+
+    async def _mock_research(state):
+        return {
+            "rag_docs": [],
+            "trace": [AgentTrace(agent="research", input_keys=[], output_keys=[], duration_ms=0.0, notes="")],
+        }
+
+    async def _mock_analyst(state):
+        return {
+            "response": f"Answer: {state.get('query', '')}",
+            "trace": [AgentTrace(agent="analyst", input_keys=[], output_keys=[], duration_ms=0.0, notes="")],
+        }
+
+    monkeypatch.setattr(orch_module, "orchestrator_node", _mock_orch)
+    monkeypatch.setattr(orch_module, "stats_node", _mock_stats)
+    monkeypatch.setattr(orch_module, "research_node", _mock_research)
+    monkeypatch.setattr(orch_module, "analyst_node", _mock_analyst)
+
+    checkpointed = orch_module.build_graph(checkpointer=memory_saver)
+    monkeypatch.setattr(orch_module, "_graph_checkpointed", checkpointed)
+
+    result1 = await orch_module.run_query("question one", thread_id=thread_id)
+    assert result1.get("response") == "Answer: question one"
+
+    result2 = await orch_module.run_query(
+        "question two",
+        extra_state={"history": [{"role": "assistant", "content": result1.get("response", "")}]},
+        thread_id=thread_id,
+    )
+    assert result2.get("history") is not None
+    assert any(h.get("content") == result1.get("response") for h in result2.get("history", []))

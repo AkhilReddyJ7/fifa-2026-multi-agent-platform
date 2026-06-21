@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -88,3 +89,69 @@ async def test_routing_chat_goes_to_research():
     state["intent"] = "chat"
     state["team_codes"] = ["BRA"]
     assert _route_after_stats(state) == "research"
+
+
+# ── Phase 4B: checkpointing tests ────────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_run_query_with_thread_id_passes_config_to_ainvoke(monkeypatch):
+    """run_query with thread_id calls checkpointed graph with the correct config."""
+    import app.agents.orchestrator as orch_module
+
+    mock_graph = MagicMock()
+    mock_graph.ainvoke = AsyncMock(return_value={"response": "ok", "trace": []})
+    monkeypatch.setattr(orch_module, "_graph_checkpointed", mock_graph)
+
+    await orch_module.run_query("test query", thread_id="test-uuid-123")
+
+    mock_graph.ainvoke.assert_awaited_once()
+    call_kwargs = mock_graph.ainvoke.call_args.kwargs
+    assert call_kwargs.get("config") == {"configurable": {"thread_id": "test-uuid-123"}}
+
+
+@pytest.mark.asyncio
+async def test_run_query_without_thread_id_is_stateless(monkeypatch):
+    """run_query without thread_id calls the fallback graph with no config."""
+    import app.agents.orchestrator as orch_module
+
+    mock_graph = MagicMock()
+    mock_graph.ainvoke = AsyncMock(return_value={"response": "stateless", "trace": []})
+    monkeypatch.setattr(orch_module, "_graph_fallback", mock_graph)
+    monkeypatch.setattr(orch_module, "_graph_checkpointed", None)
+
+    await orch_module.run_query("test query")
+
+    mock_graph.ainvoke.assert_awaited_once()
+    assert "config" not in mock_graph.ainvoke.call_args.kwargs
+
+
+def test_build_graph_with_memory_saver_compiles():
+    """build_graph(checkpointer=MemorySaver()) compiles without error."""
+    from langgraph.checkpoint.memory import MemorySaver
+    from app.agents.orchestrator import build_graph
+
+    graph = build_graph(checkpointer=MemorySaver())
+    assert graph is not None
+
+
+@pytest.mark.asyncio
+async def test_run_query_falls_back_on_redis_error(monkeypatch):
+    """When checkpointed graph raises RedisError, run_query falls back to stateless."""
+    import redis.exceptions
+    import app.agents.orchestrator as orch_module
+
+    mock_checkpointed = MagicMock()
+    mock_checkpointed.ainvoke = AsyncMock(
+        side_effect=redis.exceptions.ConnectionError("Redis unavailable")
+    )
+    mock_fallback = MagicMock()
+    mock_fallback.ainvoke = AsyncMock(return_value={"response": "fallback ok", "trace": []})
+
+    monkeypatch.setattr(orch_module, "_graph_checkpointed", mock_checkpointed)
+    monkeypatch.setattr(orch_module, "_graph_fallback", mock_fallback)
+
+    result = await orch_module.run_query("query", thread_id="test-uuid-123")
+
+    mock_checkpointed.ainvoke.assert_awaited_once()
+    mock_fallback.ainvoke.assert_awaited_once()
+    assert result["response"] == "fallback ok"

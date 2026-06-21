@@ -88,7 +88,11 @@ async def chat(
     db.add(ChatMessage(session_id=session.id, role="user", content=payload.message))
     await db.flush()
 
-    final_state = await run_query(payload.message, extra_state={"history": history})
+    final_state = await run_query(
+        payload.message,
+        extra_state={"history": history},
+        thread_id=session.session_uuid,
+    )
 
     response_text = final_state.get("response", "")
     trace = final_state.get("trace", [])

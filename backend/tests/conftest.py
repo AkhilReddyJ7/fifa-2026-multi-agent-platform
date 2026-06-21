@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 from typing import AsyncGenerator
 
+import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -67,6 +68,13 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
         yield ac
 
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def memory_saver():
+    """Return a MemorySaver instance for test-time LangGraph checkpointing."""
+    from langgraph.checkpoint.memory import MemorySaver
+    return MemorySaver()
 
 
 @pytest_asyncio.fixture

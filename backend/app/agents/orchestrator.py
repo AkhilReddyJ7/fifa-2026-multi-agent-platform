@@ -19,6 +19,7 @@ from typing import Any, Dict
 
 import structlog
 from langgraph.graph import END, START, StateGraph
+from redis.exceptions import RedisError
 
 from app.agents.analyst_agent import analyst_node
 from app.agents.prediction_agent import prediction_node
@@ -127,8 +128,8 @@ def _route_after_prediction_or_simulation(state: PlatformState) -> str:
 
 # ── Graph construction ────────────────────────────────────────────────────────
 
-def build_graph() -> Any:
-    """Compile the LangGraph StateGraph."""
+def build_graph(checkpointer: Any = None) -> Any:
+    """Compile the LangGraph StateGraph with an optional checkpointer."""
     g: StateGraph = StateGraph(PlatformState)
 
     g.add_node("orchestrator", orchestrator_node)
@@ -152,26 +153,51 @@ def build_graph() -> Any:
     g.add_edge("research", "analyst")
     g.add_edge("analyst", END)
 
-    return g.compile()
+    return g.compile(checkpointer=checkpointer)
+
+
+# ── Graph singletons ──────────────────────────────────────────────────────────
+
+# Stateless fallback — always available, compiled without a checkpointer.
+_graph_fallback: Any = None
+
+# Checkpointed graph — set by init_checkpointed_graph() when Redis is available.
+_graph_checkpointed: Any = None
+
+
+def _get_fallback_graph() -> Any:
+    global _graph_fallback
+    if _graph_fallback is None:
+        _graph_fallback = build_graph()
+    return _graph_fallback
+
+
+def init_checkpointed_graph(checkpointer: Any) -> None:
+    """Compile and store the checkpointed graph singleton."""
+    global _graph_checkpointed
+    _graph_checkpointed = build_graph(checkpointer=checkpointer)
 
 
 # ── Public entry point ────────────────────────────────────────────────────────
 
-_graph = None
-
-
-def _get_graph():
-    global _graph
-    if _graph is None:
-        _graph = build_graph()
-    return _graph
-
-
-async def run_query(query: str, extra_state: Dict[str, Any] | None = None) -> PlatformState:
+async def run_query(
+    query: str,
+    extra_state: Dict[str, Any] | None = None,
+    thread_id: str | None = None,
+) -> PlatformState:
     """Run a query through the full agent pipeline and return the final state."""
     state = initial_state(query)
     if extra_state:
         state.update(extra_state)  # type: ignore[typeddict-item]
-    graph = _get_graph()
-    result: PlatformState = await graph.ainvoke(state)
+
+    if thread_id is not None and _graph_checkpointed is not None:
+        try:
+            result: PlatformState = await _graph_checkpointed.ainvoke(
+                state, config={"configurable": {"thread_id": thread_id}}
+            )
+            return result
+        except RedisError as exc:
+            log.warning("run_query.redis_fallback", error=str(exc), thread_id=thread_id)
+
+    result = await _get_fallback_graph().ainvoke(state)
     return result

@@ -12,7 +12,7 @@ Architecture decisions, trade-offs, and known technical debt recorded for future
 
 **Why:** Conditional routing between prediction, simulation, and research nodes is a first-class graph operation in LangGraph. The `operator.add` annotation on `trace` accumulates agent traces automatically across all nodes without explicit merge code. Checkpointing (Phase 4B) plugs in without restructuring the graph.
 
-**Trade-off:** LangGraph `0.2.28` has a substantially different checkpointer API from `0.1.x`. Upgrading LangGraph in future phases requires reviewing the `AsyncRedisSaver` interface.
+**Trade-off:** LangGraph was upgraded from `0.2.28` to `>=1.2.0,<2.0.0` in Phase 4B. The `AsyncRedisSaver` is from `langgraph-checkpoint-redis` (latest available: `0.4.x`, not `1.0.x` as originally planned — no `1.0.x` release exists on PyPI). The compile API is backward-compatible.
 
 ---
 
@@ -152,7 +152,7 @@ Architecture decisions, trade-offs, and known technical debt recorded for future
 | ID | Item | Severity | Phase to fix |
 |----|------|----------|-------------|
 | TD-1 | ChromaDB sync client blocks event loop | Medium | 5B |
-| TD-2 | Redis configured but unused | Low | 4B |
+| TD-2 | ~~Redis configured but unused~~ | ✅ Resolved | Phase 4B — `AsyncRedisSaver` checkpointer wired in non-streaming chat path |
 | TD-3 | Auth not enforced; `user_id` always NULL | High | 4C |
 | TD-4 | mypy `continue-on-error: true` in CI | Low | Ongoing |
 | TD-5 | Routing logic duplicated between graph and streaming path | Medium | Refactor when routing complexity grows |
@@ -160,3 +160,4 @@ Architecture decisions, trade-offs, and known technical debt recorded for future
 | TD-7 | Stats Agent opens its own DB session (not request-scoped) | Low | Acceptable for agent context; no fix needed |
 | TD-8 | Chat table migrations not in Alembic | Low | Add migration before production deploy |
 | TD-9 | Thread pool saturation under concurrent simulation load | Medium | 4B+ (worker queue) |
+| TD-10 | `PlatformState.trace` accumulates across all turns when checkpointing is active; `ChatMessage.agent_trace` grows with session length | Low | 5+ (slice to current-turn traces only using pre-invocation checkpoint count) |

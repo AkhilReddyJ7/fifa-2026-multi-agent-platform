@@ -22,7 +22,7 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 | PostgreSQL (async) | ✅ Complete | SQLAlchemy 2.x async engine, `asyncpg` driver |
 | Alembic migrations | ✅ Complete | 2 migrations: initial schema + prediction/simulation tables |
 | SQLite fallback (CI) | ✅ Complete | Detected via URL prefix; pool kwargs skipped for SQLite |
-| Redis | ⚠️ Configured only | Client in `health.py`, URL in config; not used by any agent |
+| Redis | ✅ Active (checkpointing) | `AsyncRedisSaver` checkpointer wired in non-streaming chat path (Phase 4B); graceful fallback when unavailable |
 | ChromaDB | ✅ Functional | Synchronous `HttpClient`; 3 collections indexed |
 | Docker Compose | ✅ Complete | Postgres 16, Redis 7, ChromaDB, API service with healthchecks |
 | Prometheus metrics | ✅ Complete | `prometheus-fastapi-instrumentator` at `/metrics` |
@@ -80,16 +80,17 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 
 ## Test Suite
 
-**109 tests, 109 passing.** All run against SQLite in-memory (CI) and locally.
+**128 tests, 128 passing.** All run against SQLite in-memory (CI) and locally.
 
 | Test Module | Tests | Coverage Area |
 |-------------|-------|---------------|
-| `test_orchestrator.py` | 16 | Intent classification, team extraction, graph routing |
+| `test_orchestrator.py` | 20 | Intent classification, team extraction, graph routing, checkpointing |
 | `test_prediction_agent.py` | 3 | ELO-Poisson model, XAI narrative |
 | `test_research_agent.py` | 24 | RAG retrieval, query building, deduplication, interleaving |
 | `test_simulation_agent.py` | 3 | Monte Carlo node, empty-team fallback, `asyncio.to_thread` |
 | `test_stats_agent.py` | 3 | DB query helpers |
-| `test_chat.py` | 13 | Session CRUD, streaming SSE, simulation_node routing |
+| `test_auth.py` | 11 | User registration, login, JWT validation (Phase 4C) |
+| `test_chat.py` | 17 | Session CRUD, streaming SSE, simulation_node routing, checkpointing |
 | `test_health.py` | 2 | Health endpoint |
 | `test_matches.py` | 8 | Match CRUD |
 | `test_predictions.py` | 8 | Prediction persistence |
@@ -115,7 +116,7 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 ## Known Issues / Technical Debt
 
 1. **ChromaDB sync client** — `chromadb.HttpClient` is synchronous. Called from `research_node` (async) without `asyncio.to_thread`. Under load this blocks the event loop. Fix: wrap in `asyncio.to_thread` or switch to `AsyncHttpClient` when ChromaDB supports it stably.
-2. **Redis unused** — Redis is in `requirements.txt`, configured in `settings`, health-checked, but no agent or API uses it. Intended for LangGraph checkpointing (Phase 4B).
+2. **Redis checkpointing (Phase 4B complete)** — `AsyncRedisSaver` wired as LangGraph checkpointer for the non-streaming chat path. Graceful fallback to stateless execution when Redis is unavailable. Streaming path (`event_generator`) is not checkpointed (out of scope for Phase 4B).
 3. **Auth not enforced** — `security.py` has JWT helpers; no route is guarded. `user_id` column on `ChatSession` is always `None`.
 4. **mypy advisory** — `continue-on-error: true` on the mypy CI step. Several `type: ignore` comments in `chat.py` due to TypedDict merge patterns.
 5. **No metadata filtering in RAG** — ChromaDB collections store metadata (`year`, `team_code`, etc.) but queries never filter by it. All retrieval is semantic-only.

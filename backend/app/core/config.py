@@ -38,6 +38,7 @@ class Settings(BaseSettings):
 
     # Redis
     redis_url: str = "redis://localhost:6379/0"
+    redis_checkpoint_url: str = "redis://localhost:6379/1"
 
     # ChromaDB
     chroma_host: str = "localhost"

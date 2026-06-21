@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +17,24 @@ from app.core.config import get_settings
 log = structlog.get_logger()
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """Initialize optional services on startup; clean up on shutdown."""
+    try:
+        from langgraph.checkpoint.redis.aio import AsyncRedisSaver
+        from app.agents.orchestrator import init_checkpointed_graph
+
+        saver = AsyncRedisSaver(redis_url=settings.redis_checkpoint_url)
+        await saver.asetup()
+        init_checkpointed_graph(saver)
+        log.info("checkpointer.initialized", url=settings.redis_checkpoint_url)
+    except Exception as exc:
+        log.warning("checkpointer.unavailable", error=str(exc))
+
+    yield
+
+
 app = FastAPI(
     title="FIFA 2026 Intelligence Platform",
     description="Multi-agent AI platform for FIFA 2026 World Cup analytics, predictions, and simulation.",
@@ -21,6 +42,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
+    lifespan=lifespan,
 )
 
 # ── Middleware ─────────────────────────────────────────────────────────────────
