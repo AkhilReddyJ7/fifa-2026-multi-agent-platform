@@ -12,6 +12,7 @@ import re
 from typing import Any, AsyncIterator
 
 import structlog
+from langsmith import traceable
 
 from app.core.config import get_settings
 
@@ -32,6 +33,7 @@ def _get_client():
     return _client
 
 
+@traceable(name="analyst_llm", run_type="llm")
 async def chat_complete(
     messages: list[dict[str, str]],
     model: str | None = None,
@@ -55,6 +57,7 @@ async def chat_complete(
     return resp.choices[0].message.content or ""
 
 
+@traceable(name="analyst_llm_stream", run_type="llm")
 async def chat_stream(
     messages: list[dict[str, str]],
     model: str | None = None,

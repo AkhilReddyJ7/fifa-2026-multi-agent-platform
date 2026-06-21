@@ -1,9 +1,9 @@
 # Project State — FIFA 2026 Intelligence Platform
 
 **Branch:** `phase-3b` (current working branch)  
-**Stable tag:** `phase-3b-stable`  
-**Last phase completed:** Phase 4A-Lite  
-**Date:** 2026-06-11
+**Stable tag:** `phase-4b-redis-checkpointing-stable`  
+**Last phase completed:** Phase 6A  
+**Date:** 2026-06-20
 
 ---
 
@@ -23,6 +23,7 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 | Alembic migrations | ✅ Complete | 2 migrations: initial schema + prediction/simulation tables |
 | SQLite fallback (CI) | ✅ Complete | Detected via URL prefix; pool kwargs skipped for SQLite |
 | Redis | ✅ Active (checkpointing) | `AsyncRedisSaver` checkpointer wired in non-streaming chat path (Phase 4B); graceful fallback when unavailable |
+| LangSmith tracing | ✅ Active (when `LANGCHAIN_TRACING_V2=true`) | `@traceable` on `run_query` and LLM call (Phase 6A); transparent no-op when env vars absent |
 | ChromaDB | ✅ Functional | Synchronous `HttpClient`; 3 collections indexed |
 | Docker Compose | ✅ Complete | Postgres 16, Redis 7, ChromaDB, API service with healthchecks |
 | Prometheus metrics | ✅ Complete | `prometheus-fastapi-instrumentator` at `/metrics` |
@@ -80,11 +81,11 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 
 ## Test Suite
 
-**128 tests, 128 passing.** All run against SQLite in-memory (CI) and locally.
+**133 tests, 133 passing.** All run against SQLite in-memory (CI) and locally.
 
 | Test Module | Tests | Coverage Area |
 |-------------|-------|---------------|
-| `test_orchestrator.py` | 20 | Intent classification, team extraction, graph routing, checkpointing |
+| `test_orchestrator.py` | 25 | Intent classification, team extraction, graph routing, checkpointing, LangSmith tracing |
 | `test_prediction_agent.py` | 3 | ELO-Poisson model, XAI narrative |
 | `test_research_agent.py` | 24 | RAG retrieval, query building, deduplication, interleaving |
 | `test_simulation_agent.py` | 3 | Monte Carlo node, empty-team fallback, `asyncio.to_thread` |

@@ -32,6 +32,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as exc:
         log.warning("checkpointer.unavailable", error=str(exc))
 
+    # Reflects cached Settings evaluated at startup. Actual tracing is controlled
+    # by LANGCHAIN_TRACING_V2 read from os.environ at call time by langsmith —
+    # this log is best-effort and may diverge if env vars change after startup.
+    if settings.langsmith_tracing_enabled:
+        log.info("langsmith.tracing.enabled", project=settings.langsmith_project)
+    else:
+        log.info("langsmith.tracing.disabled")
+
     yield
 
 

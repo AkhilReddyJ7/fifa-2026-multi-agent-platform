@@ -155,3 +155,62 @@ async def test_run_query_falls_back_on_redis_error(monkeypatch):
     mock_checkpointed.ainvoke.assert_awaited_once()
     mock_fallback.ainvoke.assert_awaited_once()
     assert result["response"] == "fallback ok"
+
+
+# ── Phase 6A: LangSmith tracing tests ────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_run_query_completes_without_langsmith_env_vars(monkeypatch):
+    """run_query completes without error when LangSmith env vars are absent."""
+    monkeypatch.delenv("LANGCHAIN_TRACING_V2", raising=False)
+    monkeypatch.delenv("LANGCHAIN_API_KEY", raising=False)
+
+    import app.agents.orchestrator as orch_module
+
+    mock_graph = MagicMock()
+    mock_graph.ainvoke = AsyncMock(return_value={"response": "ok", "trace": []})
+    monkeypatch.setattr(orch_module, "_graph_fallback", mock_graph)
+    monkeypatch.setattr(orch_module, "_graph_checkpointed", None)
+
+    result = await orch_module.run_query("who wins Brazil vs Argentina")
+    assert isinstance(result, dict)
+    assert "response" in result
+
+
+def test_run_query_is_decorated_with_traceable():
+    """run_query carries the @traceable wrapper from langsmith."""
+    from app.agents.orchestrator import run_query
+    assert hasattr(run_query, "__wrapped__")
+
+
+def test_llm_function_is_decorated_with_traceable():
+    """chat_complete in llm.py carries the @traceable wrapper from langsmith."""
+    from app.core.llm import chat_complete
+    assert hasattr(chat_complete, "__wrapped__")
+
+
+def test_settings_langsmith_tracing_disabled_by_default(monkeypatch):
+    """Settings() disables LangSmith tracing when env vars are absent."""
+    monkeypatch.delenv("LANGCHAIN_TRACING_V2", raising=False)
+    monkeypatch.delenv("LANGCHAIN_API_KEY", raising=False)
+    monkeypatch.delenv("LANGCHAIN_PROJECT", raising=False)
+    monkeypatch.delenv("LANGCHAIN_ENDPOINT", raising=False)
+    monkeypatch.delenv("LANGSMITH_TRACING_ENABLED", raising=False)
+    monkeypatch.delenv("LANGSMITH_API_KEY", raising=False)
+
+    from app.core.config import Settings
+    s = Settings()
+    assert s.langsmith_tracing_enabled is False
+    assert not s.langsmith_api_key
+
+
+def test_settings_langsmith_tracing_enabled_when_env_vars_set(monkeypatch):
+    """Settings() enables tracing when LANGCHAIN_TRACING_V2=true is set."""
+    monkeypatch.setenv("LANGCHAIN_TRACING_V2", "true")
+    monkeypatch.setenv("LANGCHAIN_API_KEY", "test-key")
+    monkeypatch.setenv("LANGCHAIN_PROJECT", "test-project")
+
+    from app.core.config import Settings
+    s = Settings()
+    assert s.langsmith_tracing_enabled is True
+    assert s.langsmith_project == "test-project"

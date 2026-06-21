@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import List, Literal, Union
 
-from pydantic import field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -54,6 +54,24 @@ class Settings(BaseSettings):
 
     # Rate limits
     rate_limit_per_minute: int = 60
+
+    # LangSmith / tracing
+    langsmith_tracing_enabled: bool = Field(
+        default=False,
+        validation_alias=AliasChoices("langchain_tracing_v2", "langsmith_tracing_enabled"),
+    )
+    langsmith_api_key: str = Field(
+        default="",
+        validation_alias=AliasChoices("langchain_api_key", "langsmith_api_key"),
+    )
+    langsmith_project: str = Field(
+        default="fifa2026-platform",
+        validation_alias=AliasChoices("langchain_project", "langsmith_project"),
+    )
+    langsmith_endpoint: str = Field(
+        default="https://api.smith.langchain.com",
+        validation_alias=AliasChoices("langchain_endpoint", "langsmith_endpoint"),
+    )
 
 
 @lru_cache

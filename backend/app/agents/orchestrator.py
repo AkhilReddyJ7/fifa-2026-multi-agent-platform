@@ -18,6 +18,7 @@ import time
 from typing import Any, Dict
 
 import structlog
+from langsmith import traceable
 from langgraph.graph import END, START, StateGraph
 from redis.exceptions import RedisError
 
@@ -180,6 +181,7 @@ def init_checkpointed_graph(checkpointer: Any) -> None:
 
 # ── Public entry point ────────────────────────────────────────────────────────
 
+@traceable(name="run_query", run_type="chain")
 async def run_query(
     query: str,
     extra_state: Dict[str, Any] | None = None,

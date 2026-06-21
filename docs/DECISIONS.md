@@ -147,6 +147,18 @@ Architecture decisions, trade-offs, and known technical debt recorded for future
 
 ---
 
+## Observability
+
+### Decision: `@traceable` decorator over explicit RunTree API
+
+**Chosen:** `langsmith.traceable` decorator on `run_query` (orchestrator) and both LLM call functions (`chat_complete`, `chat_stream`) in `llm.py`.
+
+**Why:** The decorator approach requires zero changes to function signatures and handles the enabled/disabled branching internally via `LANGCHAIN_TRACING_V2`. The alternative (manual `RunTree` API) requires wrapping every call site with try/except and managing parent/child span IDs explicitly — that is high coupling for an observability concern.
+
+**Trade-off:** Only the two instrumented functions appear as traced spans. Intermediate LangGraph nodes (`orchestrator_node`, `stats_node`, etc.) do not appear as child spans unless individually decorated. Full per-node visibility requires either decorating each node function or switching the analyst to `langchain_openai.ChatOpenAI` (which auto-instruments). Deferred to Phase 6B as TD-12.
+
+---
+
 ## Known Technical Debt Summary
 
 | ID | Item | Severity | Phase to fix |
@@ -161,3 +173,5 @@ Architecture decisions, trade-offs, and known technical debt recorded for future
 | TD-8 | Chat table migrations not in Alembic | Low | Add migration before production deploy |
 | TD-9 | Thread pool saturation under concurrent simulation load | Medium | 4B+ (worker queue) |
 | TD-10 | `PlatformState.trace` accumulates across all turns when checkpointing is active; `ChatMessage.agent_trace` grows with session length | Low | 5+ (slice to current-turn traces only using pre-invocation checkpoint count) |
+| TD-11 | LangSmith receives full query content and agent outputs; no PII scrubbing in place | Low | Revisit before public deployment; low risk for football-only queries |
+| TD-12 | Streaming path (`event_generator`) is not traced; manual node chain has no LangSmith visibility | Low | Phase 6B — wrap each node call with `@traceable` or switch to LangGraph native streaming |
