@@ -1,8 +1,8 @@
 # Project State — FIFA 2026 Intelligence Platform
 
 **Branch:** `phase-3b` (current working branch)  
-**Stable tag:** `phase-4b-redis-checkpointing-stable`  
-**Last phase completed:** Phase 6A  
+**Stable tag:** `phase-6a-observability-stable`  
+**Last phase completed:** Phase 5A  
 **Date:** 2026-06-20
 
 ---
@@ -76,6 +76,17 @@ A multi-agent AI backend for FIFA 2026 World Cup analytics. It exposes a FastAPI
 | Auth middleware / route guards | ❌ Not wired |
 | User model | ❌ Not implemented |
 | `user_id` on `ChatSession` | ⚠️ Column exists, always `None` |
+
+### Frontend
+| Feature | Status |
+|---------|--------|
+| Login / Register | ✅ Phase 5A |
+| Chat with SSE streaming | ✅ Phase 5A |
+| Session history sidebar (localStorage) | ✅ Phase 5A |
+| Mobile-responsive layout | ✅ Phase 5A |
+| Team browser | ❌ Deferred |
+| Prediction tool | ❌ Deferred |
+| Simulation dashboard | ❌ Deferred |
 
 ---
 
