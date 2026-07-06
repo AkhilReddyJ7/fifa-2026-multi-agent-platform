@@ -14,11 +14,16 @@ Five specialist agents (Stats, Prediction, Simulation, Research, Analyst) are or
 
 | Layer | Technologies |
 |---|---|
-| Frontend | React 18, TypeScript, Tailwind CSS, Zustand |
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS 4, Zustand |
 | Backend | FastAPI, Python 3.12, SQLAlchemy 2.x, Alembic |
 | Agents | LangGraph, OpenAI-compatible LLM interface |
 | Databases | PostgreSQL 16, ChromaDB, Redis 7 |
 | Infra | Docker, GitHub Actions, Nginx, Prometheus |
+
+> **No API key? No problem.** If `OPENAI_API_KEY` is unset, the LLM layer falls
+> back to a deterministic local mode that formats agent outputs directly — the
+> whole platform (predictions, simulation, chat) works offline. Set a key to get
+> real LLM-written analysis.
 
 ## Quick Start
 
@@ -39,10 +44,10 @@ cp .env.example .env
 
 ```bash
 cd infra
-docker compose up -d
+docker compose up -d --build
 ```
 
-This starts: PostgreSQL, Redis, ChromaDB, and the FastAPI backend.
+This starts: PostgreSQL, Redis, ChromaDB, the FastAPI backend, and the React frontend.
 
 ### 3. Run migrations
 
@@ -56,8 +61,9 @@ docker compose exec api alembic upgrade head
 docker compose exec api python -m scripts.seed_data
 ```
 
-### 5. Open the API
+### 5. Open the app
 
+- **Frontend**: http://localhost:3000 — dashboard, prediction UI, tournament simulation, streaming analyst chat
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 - **Health**: http://localhost:8000/api/v1/health
@@ -66,11 +72,12 @@ docker compose exec api python -m scripts.seed_data
 
 ## Local Development (without Docker)
 
+### Backend
+
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-pip install aiosqlite   # for SQLite test backend
 
 # Copy and edit env
 cp ../.env.example .env
@@ -80,6 +87,14 @@ alembic upgrade head
 
 # Start dev server with auto-reload
 uvicorn app.main:app --reload --port 8000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev    # http://localhost:5173, proxies /api to localhost:8000
 ```
 
 ---
@@ -126,6 +141,20 @@ open htmlcov/index.html
 | GET | `/api/v1/matches/{id}` | Get match detail with team names |
 | GET | `/api/v1/matches/{id}/stats` | Per-team stats for a match |
 
+### Predictions & Simulation
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/predictions` | Predict a match (`{home_team, away_team, stage}`) — probabilities, xG, XAI, analyst summary |
+| POST | `/api/v1/simulation` | Monte Carlo tournament simulation (`{n_simulations, seed}`) — champion/final/semifinal odds |
+
+### Chat
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/chat` | Ask the analyst — full agent pipeline, complete response |
+| POST | `/api/v1/chat/stream` | Same, streamed as Server-Sent Events |
+
 ### System
 
 | Method | Endpoint | Description |
@@ -141,12 +170,12 @@ open htmlcov/index.html
 fifa2026-platform/
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/         # Route handlers
-│   │   ├── agents/         # LangGraph agents (Phase 2)
-│   │   ├── core/           # Config, security
+│   │   ├── api/v1/         # Route handlers (teams, matches, predictions, simulation, chat)
+│   │   ├── agents/         # LangGraph orchestrator + 5 specialist agents
+│   │   ├── core/           # Config, security, LLM client (with offline fallback)
 │   │   ├── db/             # SQLAlchemy models, migrations
-│   │   ├── rag/            # ChromaDB client, ingestion
-│   │   ├── ml/             # Prediction models (Phase 2)
+│   │   ├── rag/            # ChromaDB client, ingestion, seed corpora
+│   │   ├── ml/             # ELO-Poisson predictor, Monte Carlo simulator
 │   │   └── main.py
 │   ├── scripts/
 │   │   └── seed_data.py    # Historical WC data loader
@@ -154,7 +183,13 @@ fifa2026-platform/
 │   ├── Dockerfile
 │   ├── alembic.ini
 │   └── requirements.txt
-├── frontend/               # Phase 5
+├── frontend/
+│   ├── src/
+│   │   ├── components/     # Dashboard, Predict, Simulate, Chat views
+│   │   ├── lib/api.ts      # Typed API client + SSE stream reader
+│   │   └── store.ts        # Zustand chat store
+│   ├── Dockerfile          # Node build → nginx static + /api proxy
+│   └── nginx.conf
 ├── infra/
 │   ├── docker-compose.yml
 │   ├── docker-compose.prod.yml
@@ -169,11 +204,11 @@ fifa2026-platform/
 | Phase | Focus | Status |
 |---|---|---|
 | **1** | Foundation: FastAPI, DB, Docker, seed data | ✅ Complete |
-| 2 | Agent Core: LangGraph orchestrator + 5 agents | Planned |
-| 3 | Simulation + RAG: Monte Carlo, ChromaDB retrieval | Planned |
-| 4 | Chat + Streaming: WebSocket, Analyst Agent | Planned |
-| 5 | Frontend: React dashboard, prediction UI | Planned |
-| 6 | Production: observability, load testing, security | Planned |
+| **2** | Agent Core: LangGraph orchestrator + 5 agents | ✅ Complete |
+| **3** | Simulation + RAG: Monte Carlo, ChromaDB retrieval | ✅ Complete |
+| **4** | Chat + Streaming: SSE streaming, Analyst Agent | ✅ Complete |
+| **5** | Frontend: React dashboard, prediction UI, streaming chat | ✅ Complete |
+| **6** | Production: nginx edge, Docker images for both tiers, CI for backend + frontend | ✅ Complete |
 
 ---
 

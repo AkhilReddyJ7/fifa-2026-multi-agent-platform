@@ -36,7 +36,7 @@ services:
 
   # ── ChromaDB ───────────────────────────────────────────────────────────────
   chroma:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma:0.5.3
     restart: unless-stopped
     ports:
       - "8001:8000"
@@ -78,6 +78,17 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+
+  # ── Frontend (React SPA behind nginx, proxies /api to the backend) ────────
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
 
 volumes:
   postgres_data:

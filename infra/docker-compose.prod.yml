@@ -32,3 +32,4 @@ services:
       - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - api
+      - frontend
