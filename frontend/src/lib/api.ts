@@ -14,8 +14,17 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
-export function listTeams(pageSize = 100): Promise<{ items: Team[]; total: number }> {
-  return request(`/teams?page_size=${pageSize}`)
+// One fetch shared by every view; teams don't change within a session.
+let teamsCache: Promise<{ items: Team[]; total: number }> | null = null
+
+export function listTeams(): Promise<{ items: Team[]; total: number }> {
+  teamsCache ??= request<{ items: Team[]; total: number }>('/teams?page_size=100').catch(
+    (err) => {
+      teamsCache = null // allow retry after a failed load
+      throw err
+    },
+  )
+  return teamsCache
 }
 
 export function predictMatch(home: string, away: string, stage: string): Promise<Prediction> {
@@ -32,9 +41,14 @@ export function runSimulation(nSimulations: number, seed?: number): Promise<Simu
   })
 }
 
+/** Invert the backend's chunk encoding: `\\` then `\n` were escaped, in that order. */
+function unescapeChunk(data: string): string {
+  return data.replace(/\\(n|\\)/g, (_, c: string) => (c === 'n' ? '\n' : '\\'))
+}
+
 /**
  * Stream the analyst's chat response over SSE. The backend frames chunks as
- * `data: <text>` lines with literal newlines escaped as `\n`, bracketed by
+ * `data: <text>` lines with backslashes and newlines escaped, bracketed by
  * `[START]` / `[DONE]` sentinels.
  */
 export async function streamChat(
@@ -67,7 +81,7 @@ export async function streamChat(
         if (!line.startsWith('data: ')) continue
         const data = line.slice(6)
         if (data === '[START]' || data === '[DONE]') continue
-        onChunk(data.replaceAll('\\n', '\n'))
+        onChunk(unescapeChunk(data))
       }
     }
   }

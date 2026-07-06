@@ -63,8 +63,9 @@ async def chat_stream_endpoint(payload: ChatRequest) -> StreamingResponse:
         # Stream analyst response
         yield "data: [START]\n\n"
         async for chunk in analyst_stream(state):
-            # SSE format
-            safe = chunk.replace("\n", "\\n")
+            # SSE format; escape backslashes before newlines so the client
+            # can invert the encoding without corrupting literal "\n" text
+            safe = chunk.replace("\\", "\\\\").replace("\n", "\\n")
             yield f"data: {safe}\n\n"
         yield "data: [DONE]\n\n"
 

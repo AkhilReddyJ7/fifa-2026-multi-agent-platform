@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from functools import lru_cache
 from typing import List, Literal
 
@@ -25,7 +26,15 @@ class Settings(BaseSettings):
 
     @property
     def allowed_origins_list(self) -> List[str]:
-        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
+        raw = self.allowed_origins.strip()
+        # Accept the JSON-array form the old List[str] field required, so
+        # existing deployments don't silently get mangled origins.
+        if raw.startswith("["):
+            try:
+                return [str(o).strip() for o in json.loads(raw)]
+            except ValueError:
+                pass
+        return [o.strip() for o in raw.split(",") if o.strip()]
 
     # Database
     database_url: str = "postgresql+asyncpg://fifa_user:fifa_pass@localhost:5432/fifa2026"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { listTeams, predictMatch } from '../lib/api'
 import type { Prediction, Team } from '../types'
-import { Card, ErrorNote, Spinner, StatTile } from './ui'
+import { Card, ErrorNote, Spinner, StatTile, pct } from './ui'
 
 const STAGES = ['group', 'r16', 'qf', 'sf', 'final'] as const
 
@@ -25,9 +25,9 @@ function OutcomeBar({ p }: { p: Prediction }) {
             key={s.label}
             className="flex items-center justify-center rounded-[4px] text-xs font-medium"
             style={{ width: `${s.value * 100}%`, background: s.color, color: s.ink }}
-            title={`${s.label}: ${(s.value * 100).toFixed(1)}%`}
+            title={`${s.label}: ${pct(s.value)}`}
           >
-            {s.value >= 0.14 ? `${(s.value * 100).toFixed(0)}%` : ''}
+            {s.value >= 0.14 ? pct(s.value, 0) : ''}
           </div>
         ))}
       </div>
@@ -37,7 +37,7 @@ function OutcomeBar({ p }: { p: Prediction }) {
             <span className="inline-block h-3 w-3 rounded-[3px]" style={{ background: s.color }} />
             {s.label}
             <span className="font-semibold" style={{ color: 'var(--ink)', fontVariantNumeric: 'tabular-nums' }}>
-              {(s.value * 100).toFixed(1)}%
+              {pct(s.value)}
             </span>
           </span>
         ))}
@@ -56,7 +56,9 @@ export default function Predict() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    listTeams().then((r) => setTeams(r.items.sort((a, b) => a.name.localeCompare(b.name)))).catch(() => {})
+    listTeams()
+      .then((r) => setTeams([...r.items].sort((a, b) => a.name.localeCompare(b.name))))
+      .catch((e) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
   const run = async () => {
@@ -120,7 +122,7 @@ export default function Predict() {
               value={`${result.expected_home_goals.toFixed(1)} – ${result.expected_away_goals.toFixed(1)}`}
               sub={`${result.home_code} vs ${result.away_code}`}
             />
-            <StatTile label="Model confidence" value={`${(result.confidence * 100).toFixed(0)}%`} />
+            <StatTile label="Model confidence" value={pct(result.confidence, 0)} />
             <StatTile label="Model" value={result.model_version} />
           </div>
 

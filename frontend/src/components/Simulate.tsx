@@ -1,20 +1,20 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { runSimulation } from '../lib/api'
 import type { SimulationResult } from '../types'
-import { Card, ChartTooltip, ErrorNote, Spinner, StatTile, useTooltip } from './ui'
+import { Card, ChartTooltip, ErrorNote, Spinner, StatTile, pct, useTooltip } from './ui'
 
 const RUN_OPTIONS = [500, 1000, 2000, 5000]
+
+type RankedRow = [string, number]
 
 /**
  * One measure (championship probability) across teams → single-hue bars
  * (categorical slot 1), value at the tip, hairline baseline. Per-mark hover
  * tooltip adds final/semifinal odds; the table below is the full data twin.
  */
-function WinProbChart({ sim }: { sim: SimulationResult }) {
+function WinProbChart({ sim, ranked }: { sim: SimulationResult; ranked: RankedRow[] }) {
   const { tip, setTip } = useTooltip()
-  const rows = Object.entries(sim.win_probabilities)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
+  const rows = ranked.slice(0, 10)
   const max = rows.length ? rows[0][1] : 1
 
   return (
@@ -31,9 +31,9 @@ function WinProbChart({ sim }: { sim: SimulationResult }) {
                 y: e.clientY - host.top,
                 title: code,
                 rows: [
-                  { label: 'Champion', value: `${(prob * 100).toFixed(1)}%` },
-                  { label: 'Reaches final', value: `${((sim.final_probabilities[code] ?? 0) * 100).toFixed(1)}%` },
-                  { label: 'Reaches semis', value: `${((sim.semifinal_probabilities[code] ?? 0) * 100).toFixed(1)}%` },
+                  { label: 'Champion', value: pct(prob) },
+                  { label: 'Reaches final', value: pct(sim.final_probabilities[code]) },
+                  { label: 'Reaches semis', value: pct(sim.semifinal_probabilities[code]) },
                 ],
               })
             }}
@@ -54,7 +54,7 @@ function WinProbChart({ sim }: { sim: SimulationResult }) {
               className="w-12 shrink-0 text-right text-xs font-semibold"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
-              {(prob * 100).toFixed(1)}%
+              {pct(prob)}
             </span>
           </div>
         ))}
@@ -64,9 +64,7 @@ function WinProbChart({ sim }: { sim: SimulationResult }) {
   )
 }
 
-function ProbTable({ sim }: { sim: SimulationResult }) {
-  const rows = Object.entries(sim.win_probabilities).sort((a, b) => b[1] - a[1])
-  const pct = (v: number | undefined) => `${((v ?? 0) * 100).toFixed(1)}%`
+function ProbTable({ sim, ranked }: { sim: SimulationResult; ranked: RankedRow[] }) {
   return (
     <div className="max-h-80 overflow-auto">
       <table className="w-full text-sm">
@@ -79,7 +77,7 @@ function ProbTable({ sim }: { sim: SimulationResult }) {
           </tr>
         </thead>
         <tbody style={{ fontVariantNumeric: 'tabular-nums' }}>
-          {rows.map(([code, prob]) => (
+          {ranked.map(([code, prob]) => (
             <tr key={code} style={{ borderTop: '1px solid var(--grid)' }}>
               <td className="py-1.5 pr-4">{code}</td>
               <td className="py-1.5 pr-4 text-right">{pct(prob)}</td>
@@ -111,9 +109,12 @@ export default function Simulate() {
     }
   }
 
-  const favorite = result
-    ? Object.entries(result.win_probabilities).sort((a, b) => b[1] - a[1])[0]
-    : null
+  // Single ranking shared by the chart, the table, and the favorite tile
+  const ranked = useMemo<RankedRow[]>(
+    () => (result ? Object.entries(result.win_probabilities).sort((a, b) => b[1] - a[1]) : []),
+    [result],
+  )
+  const favorite = ranked[0] ?? null
 
   return (
     <div className="space-y-4">
@@ -138,23 +139,23 @@ export default function Simulate() {
       {error && <ErrorNote message={error} />}
 
       {result && !loading && (
-        <div style={loading ? { opacity: 0.5 } : undefined} className="space-y-4">
+        <div className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <StatTile
               label="Title favorite"
               value={favorite ? favorite[0] : '—'}
-              sub={favorite ? `${(favorite[1] * 100).toFixed(1)}% champion probability` : undefined}
+              sub={favorite ? `${pct(favorite[1])} champion probability` : undefined}
             />
             <StatTile label="Simulations" value={result.n_simulations.toLocaleString()} />
-            <StatTile label="Teams with a title path" value={String(Object.keys(result.win_probabilities).length)} />
+            <StatTile label="Teams with a title path" value={String(ranked.length)} />
           </div>
 
           <Card title="Championship probability — top 10">
-            <WinProbChart sim={result} />
+            <WinProbChart sim={result} ranked={ranked} />
           </Card>
 
           <Card title="All teams — knockout round probabilities">
-            <ProbTable sim={result} />
+            <ProbTable sim={result} ranked={ranked} />
           </Card>
 
           {result.analyst_summary && (

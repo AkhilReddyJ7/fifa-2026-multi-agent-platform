@@ -68,7 +68,7 @@ export default function Chat() {
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && submit()}
+          onKeyDown={(e) => e.key === 'Enter' && !e.nativeEvent.isComposing && submit()}
           placeholder="Ask about FIFA 2026…"
           className="card flex-1 px-3 py-2 text-sm outline-none"
           disabled={streaming}

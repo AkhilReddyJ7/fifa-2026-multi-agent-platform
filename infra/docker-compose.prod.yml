@@ -21,6 +21,11 @@ services:
         max-size: "20m"
         max-file: "5"
 
+  frontend:
+    restart: always
+    # In prod the TLS edge nginx is the only ingress; don't publish :3000
+    ports: !reset []
+
   nginx:
     image: nginx:1.27-alpine
     restart: always

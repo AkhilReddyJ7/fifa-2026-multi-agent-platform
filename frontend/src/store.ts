@@ -32,7 +32,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         })
       })
     } catch (err) {
-      set({ error: err instanceof Error ? err.message : String(err) })
+      set((s) => {
+        // Drop the assistant bubble if nothing streamed into it
+        const messages = [...s.messages]
+        const last = messages[messages.length - 1]
+        if (last?.role === 'assistant' && last.content === '') messages.pop()
+        return { messages, error: err instanceof Error ? err.message : String(err) }
+      })
     } finally {
       set({ streaming: false })
     }

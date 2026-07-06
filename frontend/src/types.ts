@@ -4,15 +4,8 @@ export interface Team {
   fifa_code: string
   confederation: string
   group_label: string | null
-  elo_rating: number
+  elo_rating: number | null
   form_index: number | null
-}
-
-export interface Paginated<T> {
-  items: T[]
-  total: number
-  limit: number
-  offset: number
 }
 
 export interface Prediction {

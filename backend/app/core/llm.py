@@ -98,17 +98,48 @@ def _local_complete(messages: list[dict[str, str]]) -> str:
             except Exception:
                 pass
 
-    if "predict" in last_user.lower() or "prediction" in last_user.lower():
+    # Prefer the orchestrator's intent (present in the analyst context);
+    # keyword matching on the raw message is only a fallback.
+    intent = system_data.get("intent", "")
+    lower = last_user.lower()
+    if intent == "predict" or "predict" in lower or "prediction" in lower:
         return _format_prediction_text(system_data)
-    if "simulat" in last_user.lower():
+    if intent == "simulate" or "simulat" in lower:
         return _format_simulation_text(system_data)
-    if "analyz" in last_user.lower() or "analys" in last_user.lower():
+    if intent == "analyze" or "analyz" in lower or "analys" in lower:
         return _format_analysis_text(system_data)
-    return (
-        "Based on the available data, here is a summary of the FIFA 2026 "
-        "World Cup intelligence you requested.\n\n"
-        + (json.dumps(system_data, indent=2) if system_data else last_user)
-    )
+    return _format_generic_text(system_data, last_user)
+
+
+def _format_generic_text(data: dict, query: str) -> str:
+    """Readable fallback for lookup/chat intents — never dump raw context."""
+    lines = ["Here is what the FIFA 2026 intelligence agents found:"]
+
+    teams = data.get("team_codes") or []
+    if teams:
+        lines.append(f"\n**Teams in scope:** {', '.join(teams)}")
+
+    top_elo = data.get("top_elo_teams") or {}
+    if top_elo:
+        ranked = sorted(top_elo.items(), key=lambda x: x[1], reverse=True)[:5]
+        lines.append("\n**Top teams by ELO rating:**")
+        lines.extend(f"  {i+1}. {code}: {elo:.0f}" for i, (code, elo) in enumerate(ranked))
+
+    h2h = data.get("head_to_head") or []
+    if h2h:
+        lines.append(f"\n**Head-to-head record:** {len(h2h)} prior meeting(s) on file.")
+
+    docs = data.get("historical_context") or []
+    if docs:
+        lines.append(f"\n**Historical context:** {docs[0]}")
+
+    if len(lines) == 1:
+        return (
+            "I don't have specific data for that query yet — try asking for a "
+            "match prediction (e.g. 'Predict BRA vs ARG'), a tournament "
+            "simulation, or a team analysis."
+        )
+    return "\n".join(lines)
 
 
 def _format_prediction_text(data: dict) -> str:

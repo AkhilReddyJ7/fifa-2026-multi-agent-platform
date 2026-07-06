@@ -1,5 +1,9 @@
 import { useState, type ReactNode } from 'react'
 
+/** Shared percent formatter: 0.266 → "26.6%" */
+export const pct = (v: number | null | undefined, digits = 1) =>
+  `${((v ?? 0) * 100).toFixed(digits)}%`
+
 export function Card({ title, children, className = '' }: { title?: string; children: ReactNode; className?: string }) {
   return (
     <section className={`card p-5 ${className}`}>

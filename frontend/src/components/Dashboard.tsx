@@ -17,15 +17,16 @@ export default function Dashboard() {
   const filtered = useMemo(() => {
     if (!teams) return []
     const rows = conf === 'ALL' ? teams : teams.filter((t) => t.confederation === conf)
-    return [...rows].sort((a, b) => b.elo_rating - a.elo_rating)
+    return [...rows].sort((a, b) => (b.elo_rating ?? 0) - (a.elo_rating ?? 0))
   }, [teams, conf])
 
   if (error) return <ErrorNote message={error} />
   if (!teams) return <Spinner label="Loading teams…" />
 
   const top = filtered[0]
-  const avgElo = filtered.length
-    ? Math.round(filtered.reduce((s, t) => s + t.elo_rating, 0) / filtered.length)
+  const rated = filtered.filter((t) => t.elo_rating != null)
+  const avgElo = rated.length
+    ? Math.round(rated.reduce((s, t) => s + (t.elo_rating ?? 0), 0) / rated.length)
     : 0
 
   return (
@@ -45,7 +46,11 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <StatTile label="Qualified teams" value={String(filtered.length)} />
-        <StatTile label="Highest ELO" value={top ? top.name : '—'} sub={top ? `${Math.round(top.elo_rating)} rating` : undefined} />
+        <StatTile
+          label="Highest ELO"
+          value={top ? top.name : '—'}
+          sub={top?.elo_rating != null ? `${Math.round(top.elo_rating)} rating` : undefined}
+        />
         <StatTile label="Average ELO" value={String(avgElo)} />
       </div>
 
@@ -68,7 +73,7 @@ export default function Dashboard() {
                   <td className="py-1.5 pr-4">{t.name}</td>
                   <td className="py-1.5 pr-4" style={{ color: 'var(--ink-2)' }}>{t.fifa_code}</td>
                   <td className="py-1.5 pr-4" style={{ color: 'var(--ink-2)' }}>{t.confederation}</td>
-                  <td className="py-1.5 text-right">{Math.round(t.elo_rating)}</td>
+                  <td className="py-1.5 text-right">{t.elo_rating != null ? Math.round(t.elo_rating) : '—'}</td>
                 </tr>
               ))}
             </tbody>
