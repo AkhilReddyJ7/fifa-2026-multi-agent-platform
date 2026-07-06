@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """FIFA 2026 Multi-Agent Intelligence Platform — API entrypoint."""
+
+from __future__ import annotations
 
 import structlog
 from fastapi import FastAPI
@@ -27,7 +27,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.allowed_origins,
+    allow_origins=settings.allowed_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

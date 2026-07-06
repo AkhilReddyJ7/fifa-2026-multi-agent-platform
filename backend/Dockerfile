@@ -9,6 +9,10 @@ WORKDIR /app
 
 # ── Dependencies layer ────────────────────────────────────────────────────────
 FROM base AS deps
+# g++ is needed to build chroma-hnswlib (no prebuilt wheel for this platform)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends g++ \
+    && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 

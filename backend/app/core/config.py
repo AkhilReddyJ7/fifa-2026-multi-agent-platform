@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import List, Literal, Union
+from typing import List, Literal
 
-from pydantic import AnyHttpUrl, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,14 +18,14 @@ class Settings(BaseSettings):
     app_debug: bool = False
     secret_key: str = "insecure-dev-key"
     api_v1_prefix: str = "/api/v1"
-    allowed_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    # Kept as a plain string: pydantic-settings JSON-decodes complex types from
+    # env vars before validators run, so a comma-separated ALLOWED_ORIGINS
+    # would crash a List[str] field. Use allowed_origins_list.
+    allowed_origins: str = "http://localhost:3000,http://localhost:5173"
 
-    @field_validator("allowed_origins", mode="before")
-    @classmethod
-    def split_origins(cls, v: Union[str, list]) -> List[str]:
-        if isinstance(v, str):
-            return [o.strip() for o in v.split(",")]
-        return v
+    @property
+    def allowed_origins_list(self) -> List[str]:
+        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
 
     # Database
     database_url: str = "postgresql+asyncpg://fifa_user:fifa_pass@localhost:5432/fifa2026"

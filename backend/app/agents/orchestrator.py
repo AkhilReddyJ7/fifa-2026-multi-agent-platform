@@ -133,7 +133,9 @@ def build_graph() -> Any:
 
     g.add_node("orchestrator", orchestrator_node)
     g.add_node("stats", stats_node)
-    g.add_node("prediction", prediction_node)
+    # Node name must differ from the "prediction" state key — LangGraph
+    # rejects nodes that shadow state channels.
+    g.add_node("prediction_agent", prediction_node)
     g.add_node("simulation", simulation_node)
     g.add_node("research", research_node)
     g.add_node("analyst", analyst_node)
@@ -144,10 +146,10 @@ def build_graph() -> Any:
     g.add_conditional_edges(
         "stats",
         _route_after_stats,
-        {"prediction": "prediction", "simulation": "simulation", "research": "research"},
+        {"prediction": "prediction_agent", "simulation": "simulation", "research": "research"},
     )
 
-    g.add_edge("prediction", "research")
+    g.add_edge("prediction_agent", "research")
     g.add_edge("simulation", "research")
     g.add_edge("research", "analyst")
     g.add_edge("analyst", END)

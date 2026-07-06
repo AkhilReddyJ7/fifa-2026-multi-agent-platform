@@ -102,7 +102,7 @@ def _build_xai_narrative(pred: MatchPrediction, home: str, away: str) -> str:
     magnitude = abs(elo_diff)
 
     lines = [
-        f"**Key factors driving this prediction:**",
+        "**Key factors driving this prediction:**",
         f"- ELO ratings: {home} ({fi.get('home_elo')}) vs {away} ({fi.get('away_elo')}) — "
         f"{home} has {magnitude:.0f} points {direction} ELO.",
     ]

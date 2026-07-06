@@ -25,6 +25,10 @@ def _build_context(state: PlatformState) -> str:
         "intent": state.get("intent"),
         "team_codes": state.get("team_codes"),
     }
+    codes = state.get("team_codes") or []
+    if len(codes) >= 2:
+        ctx["home_team"] = codes[0]
+        ctx["away_team"] = codes[1]
 
     team_data = state.get("team_data", {})
     if team_data:

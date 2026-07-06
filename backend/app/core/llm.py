@@ -131,8 +131,9 @@ def _format_prediction_text(data: dict) -> str:
 
 
 def _format_simulation_text(data: dict) -> str:
-    results = data.get("sim_results", {})
-    top = sorted(
+    # The analyst context nests this under "simulation"; raw state uses "sim_results".
+    results = data.get("simulation") or data.get("sim_results") or {}
+    top = results.get("top_5_favorites") or sorted(
         results.get("win_probabilities", {}).items(), key=lambda x: x[1], reverse=True
     )[:5]
     lines = "\n".join(f"  {i+1}. {code}: {prob:.1%}" for i, (code, prob) in enumerate(top))
