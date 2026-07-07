@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { runSimulation } from '../lib/api'
 import type { SimulationResult } from '../types'
-import { Card, ChartTooltip, ErrorNote, Spinner, StatTile, pct, useTooltip } from './ui'
+import { AnalystSummary, Card, ChartTooltip, ErrorNote, Spinner, StatTile, pct, useTooltip } from './ui'
 
 const RUN_OPTIONS = [500, 1000, 2000, 5000]
 
@@ -158,13 +158,7 @@ export default function Simulate() {
             <ProbTable sim={result} ranked={ranked} />
           </Card>
 
-          {result.analyst_summary && (
-            <Card title="Analyst summary">
-              <p className="whitespace-pre-wrap text-sm leading-relaxed" style={{ color: 'var(--ink-2)' }}>
-                {result.analyst_summary}
-              </p>
-            </Card>
-          )}
+          <AnalystSummary text={result.analyst_summary} />
         </div>
       )}
     </div>

@@ -5,6 +5,8 @@ import type { ChatMessage } from './types'
 interface ChatStore {
   messages: ChatMessage[]
   streaming: boolean
+  /** Agents that have completed for the in-flight query, in order */
+  agents: string[]
   error: string | null
   send: (text: string) => Promise<void>
   clear: () => void
@@ -13,6 +15,7 @@ interface ChatStore {
 export const useChatStore = create<ChatStore>((set, get) => ({
   messages: [],
   streaming: false,
+  agents: [],
   error: null,
 
   send: async (text: string) => {
@@ -20,17 +23,22 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     set((s) => ({
       messages: [...s.messages, { role: 'user', content: text }, { role: 'assistant', content: '' }],
       streaming: true,
+      agents: [],
       error: null,
     }))
     try {
-      await streamChat(text, (chunk) => {
-        set((s) => {
-          const messages = [...s.messages]
-          const last = messages[messages.length - 1]
-          messages[messages.length - 1] = { ...last, content: last.content + chunk }
-          return { messages }
-        })
-      })
+      await streamChat(
+        text,
+        (chunk) => {
+          set((s) => {
+            const messages = [...s.messages]
+            const last = messages[messages.length - 1]
+            messages[messages.length - 1] = { ...last, content: last.content + chunk }
+            return { messages }
+          })
+        },
+        (agent) => set((s) => ({ agents: [...s.agents, agent] })),
+      )
     } catch (err) {
       set((s) => {
         // Drop the assistant bubble if nothing streamed into it
@@ -44,5 +52,5 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
 
-  clear: () => set({ messages: [], error: null }),
+  clear: () => set({ messages: [], agents: [], error: null }),
 }))

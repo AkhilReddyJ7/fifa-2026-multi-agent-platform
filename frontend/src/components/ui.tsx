@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import Markdown from './Markdown'
 
 /** Shared percent formatter: 0.266 → "26.6%" */
 export const pct = (v: number | null | undefined, digits = 1) =>
@@ -10,6 +11,17 @@ export function Card({ title, children, className = '' }: { title?: string; chil
       {title && <h2 className="text-sm font-medium mb-4" style={{ color: 'var(--ink-2)' }}>{title}</h2>}
       {children}
     </section>
+  )
+}
+
+export function AnalystSummary({ text }: { text: string }) {
+  if (!text) return null
+  return (
+    <Card title="Analyst summary">
+      <div className="text-sm leading-relaxed" style={{ color: 'var(--ink-2)' }}>
+        <Markdown text={text} />
+      </div>
+    </Card>
   )
 }
 

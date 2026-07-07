@@ -47,13 +47,14 @@ function unescapeChunk(data: string): string {
 }
 
 /**
- * Stream the analyst's chat response over SSE. The backend frames chunks as
- * `data: <text>` lines with backslashes and newlines escaped, bracketed by
- * `[START]` / `[DONE]` sentinels.
+ * Stream the analyst's chat response over SSE. The backend emits
+ * `[AGENT:<name>]` events as each pipeline agent finishes, then the analyst's
+ * text chunks (backslashes and newlines escaped) between `[START]`/`[DONE]`.
  */
 export async function streamChat(
   message: string,
   onChunk: (text: string) => void,
+  onAgent?: (agent: string) => void,
   signal?: AbortSignal,
 ): Promise<void> {
   const res = await fetch(`${BASE}/chat/stream`, {
@@ -81,6 +82,11 @@ export async function streamChat(
         if (!line.startsWith('data: ')) continue
         const data = line.slice(6)
         if (data === '[START]' || data === '[DONE]') continue
+        const agent = data.match(/^\[AGENT:([\w-]+)\]$/)
+        if (agent) {
+          onAgent?.(agent[1])
+          continue
+        }
         onChunk(unescapeChunk(data))
       }
     }

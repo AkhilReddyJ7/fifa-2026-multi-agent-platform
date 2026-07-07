@@ -31,17 +31,20 @@ log = structlog.get_logger()
 
 # ── Intent classifier ─────────────────────────────────────────────────────────
 
+# Stems must not end at a \b (r"\bsimulat\b" can never match "simulate"),
+# so word-continuations are matched explicitly with \w*.
+_EXPLICIT_SIMULATE_RE = re.compile(r"\bsimulat\w*", re.I)
 _PREDICT_RE = re.compile(
-    r"\b(predict|vs|versus|who wins?|chance|probability|odds|beat)\b", re.I
+    r"\b(predict\w*|vs|versus|who wins?|chance|probability|odds|beat)\b", re.I
 )
 _SIMULATE_RE = re.compile(
-    r"\b(simulat|tournament|bracket|champion|world cup winner|title)\b", re.I
+    r"\b(simulat\w*|tournament|bracket|champion\w*|world cup winner|title)\b", re.I
 )
 _ANALYZE_RE = re.compile(
-    r"\b(analyz|analys|profile|strength|weakness|tactic|form|squad)\b", re.I
+    r"\b(analy[sz]\w*|profile|strength\w*|weakness\w*|tactic\w*|form|squad)\b", re.I
 )
 _LOOKUP_RE = re.compile(
-    r"\b(stats|statistics|record|history|h2h|head.to.head|played)\b", re.I
+    r"\b(stats|statistics|record\w*|history|h2h|head.to.head|played)\b", re.I
 )
 
 _TEAM_CODES_RE = re.compile(r"\b([A-Z]{2,3})\b")
@@ -68,6 +71,10 @@ _KNOWN_CODES = {
 
 
 def _classify_intent(query: str) -> str:
+    # An explicit "simulate …" wins even when the query also matches a
+    # predict phrase ("Simulate the tournament — who wins?").
+    if _EXPLICIT_SIMULATE_RE.search(query):
+        return "simulate"
     if _PREDICT_RE.search(query):
         return "predict"
     if _SIMULATE_RE.search(query):
@@ -127,8 +134,12 @@ def _route_after_prediction_or_simulation(state: PlatformState) -> str:
 
 # ── Graph construction ────────────────────────────────────────────────────────
 
-def build_graph() -> Any:
-    """Compile the LangGraph StateGraph."""
+def build_graph(include_analyst: bool = True) -> Any:
+    """Compile the LangGraph StateGraph.
+
+    With include_analyst=False the graph ends after research — used by the
+    streaming chat endpoint, which streams the analyst's tokens separately.
+    """
     g: StateGraph = StateGraph(PlatformState)
 
     g.add_node("orchestrator", orchestrator_node)
@@ -138,7 +149,6 @@ def build_graph() -> Any:
     g.add_node("prediction_agent", prediction_node)
     g.add_node("simulation", simulation_node)
     g.add_node("research", research_node)
-    g.add_node("analyst", analyst_node)
 
     g.add_edge(START, "orchestrator")
     g.add_edge("orchestrator", "stats")
@@ -151,22 +161,36 @@ def build_graph() -> Any:
 
     g.add_edge("prediction_agent", "research")
     g.add_edge("simulation", "research")
-    g.add_edge("research", "analyst")
-    g.add_edge("analyst", END)
+
+    if include_analyst:
+        g.add_node("analyst", analyst_node)
+        g.add_edge("research", "analyst")
+        g.add_edge("analyst", END)
+    else:
+        g.add_edge("research", END)
 
     return g.compile()
 
 
-# ── Public entry point ────────────────────────────────────────────────────────
+# ── Public entry points ───────────────────────────────────────────────────────
 
-_graph = None
+_graphs: Dict[bool, Any] = {}
 
 
-def _get_graph():
-    global _graph
-    if _graph is None:
-        _graph = build_graph()
-    return _graph
+def _get_graph(include_analyst: bool = True):
+    if include_analyst not in _graphs:
+        _graphs[include_analyst] = build_graph(include_analyst)
+    return _graphs[include_analyst]
+
+
+def _merge_update(state: Dict[str, Any], update: Dict[str, Any]) -> None:
+    """Apply a node's state update using the same reducers as PlatformState
+    (trace accumulates; everything else overwrites)."""
+    for key, value in update.items():
+        if key == "trace":
+            state["trace"] = list(state.get("trace", [])) + list(value)
+        else:
+            state[key] = value
 
 
 async def run_query(query: str, extra_state: Dict[str, Any] | None = None) -> PlatformState:
@@ -177,3 +201,21 @@ async def run_query(query: str, extra_state: Dict[str, Any] | None = None) -> Pl
     graph = _get_graph()
     result: PlatformState = await graph.ainvoke(state)
     return result
+
+
+async def stream_pipeline(query: str, extra_state: Dict[str, Any] | None = None):
+    """Run the pre-analyst pipeline through the compiled graph, yielding
+    ("node", node_name) after each agent completes and ("state", final_state)
+    at the end. Keeps the streaming endpoint on the same topology as ainvoke."""
+    state: Dict[str, Any] = dict(initial_state(query))
+    if extra_state:
+        state.update(extra_state)
+    graph = _get_graph(include_analyst=False)
+
+    async for chunk in graph.astream(state, stream_mode="updates"):
+        for node_name, update in chunk.items():
+            if update:
+                _merge_update(state, update)
+            yield ("node", node_name)
+
+    yield ("state", state)

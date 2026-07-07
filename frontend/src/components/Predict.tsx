@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { listTeams, predictMatch } from '../lib/api'
 import type { Prediction, Team } from '../types'
-import { Card, ErrorNote, Spinner, StatTile, pct } from './ui'
+import { AnalystSummary, Card, ErrorNote, Spinner, StatTile, pct } from './ui'
 
 const STAGES = ['group', 'r16', 'qf', 'sf', 'final'] as const
 
@@ -126,13 +126,7 @@ export default function Predict() {
             <StatTile label="Model" value={result.model_version} />
           </div>
 
-          {result.analyst_summary && (
-            <Card title="Analyst summary">
-              <p className="whitespace-pre-wrap text-sm leading-relaxed" style={{ color: 'var(--ink-2)' }}>
-                {result.analyst_summary}
-              </p>
-            </Card>
-          )}
+          <AnalystSummary text={result.analyst_summary} />
         </>
       )}
     </div>

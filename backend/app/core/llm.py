@@ -102,10 +102,15 @@ def _local_complete(messages: list[dict[str, str]]) -> str:
     # keyword matching on the raw message is only a fallback.
     intent = system_data.get("intent", "")
     lower = last_user.lower()
+    # Only render a specialised template when its agent actually produced
+    # data — otherwise it would print placeholder numbers ("Home team vs
+    # Away team", 40%/25%/35%) that look like real output.
     if intent == "predict" or "predict" in lower or "prediction" in lower:
-        return _format_prediction_text(system_data)
+        if system_data.get("prediction"):
+            return _format_prediction_text(system_data)
     if intent == "simulate" or "simulat" in lower:
-        return _format_simulation_text(system_data)
+        if system_data.get("simulation") or system_data.get("sim_results"):
+            return _format_simulation_text(system_data)
     if intent == "analyze" or "analyz" in lower or "analys" in lower:
         return _format_analysis_text(system_data)
     return _format_generic_text(system_data, last_user)

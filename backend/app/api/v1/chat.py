@@ -38,29 +38,24 @@ async def chat(payload: ChatRequest) -> ChatResponse:
 
 @router.post("/stream", summary="Chat with streaming SSE response")
 async def chat_stream_endpoint(payload: ChatRequest) -> StreamingResponse:
-    """Streaming chat via SSE — runs stats/prediction/research first, then streams analyst."""
+    """Streaming chat via SSE.
+
+    Runs the compiled agent graph (same topology as /chat, so simulate-intent
+    queries get the simulation agent too), emitting an `[AGENT:<name>]` event
+    as each agent finishes, then streams the analyst's tokens between
+    `[START]` and `[DONE]`.
+    """
 
     async def event_generator():
-        # Run all agents except analyst to populate state
-        from app.agents.state import initial_state
-        from app.agents.orchestrator import orchestrator_node
-        from app.agents.stats_agent import stats_node
-        from app.agents.research_agent import research_node
-        from app.agents.prediction_agent import prediction_node
+        from app.agents.orchestrator import stream_pipeline
 
-        state = initial_state(payload.message)
-        state = {**state, **(await orchestrator_node(state))}
-        state = {**state, **(await stats_node(state))}
+        state = None
+        async for kind, value in stream_pipeline(payload.message):
+            if kind == "node":
+                yield f"data: [AGENT:{value}]\n\n"
+            else:
+                state = value
 
-        intent = state.get("intent", "chat")
-        if intent == "predict" and len(state.get("team_codes", [])) >= 2:
-            pred_update = await prediction_node(state)
-            state = {**state, **pred_update}
-
-        research_update = await research_node(state)
-        state = {**state, **research_update}
-
-        # Stream analyst response
         yield "data: [START]\n\n"
         async for chunk in analyst_stream(state):
             # SSE format; escape backslashes before newlines so the client

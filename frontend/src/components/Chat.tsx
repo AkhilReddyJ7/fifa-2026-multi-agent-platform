@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChatStore } from '../store'
+import Markdown from './Markdown'
 import { ErrorNote } from './ui'
+
+const AGENT_LABELS: Record<string, string> = {
+  orchestrator: 'Routing',
+  stats: 'Stats',
+  prediction_agent: 'Prediction',
+  simulation: 'Simulation',
+  research: 'Research',
+}
 
 const SUGGESTIONS = [
   'Predict BRA vs ARG',
@@ -10,7 +19,7 @@ const SUGGESTIONS = [
 ]
 
 export default function Chat() {
-  const { messages, streaming, error, send } = useChatStore()
+  const { messages, streaming, agents, error, send } = useChatStore()
   const [draft, setDraft] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -50,17 +59,37 @@ export default function Chat() {
         {messages.map((m, i) => (
           <div key={i} className={m.role === 'user' ? 'flex justify-end' : 'flex justify-start'}>
             <div
-              className="max-w-[80%] whitespace-pre-wrap rounded-xl px-4 py-2.5 text-sm leading-relaxed"
+              className="max-w-[80%] rounded-xl px-4 py-2.5 text-sm leading-relaxed"
               style={
                 m.role === 'user'
                   ? { background: 'var(--series-1)', color: '#ffffff' }
                   : { background: 'var(--neutral-mid)', color: 'var(--ink)' }
               }
             >
-              {m.content || (streaming && i === messages.length - 1 ? '…' : '')}
+              {m.role === 'assistant' ? (
+                m.content ? (
+                  <Markdown text={m.content} />
+                ) : streaming && i === messages.length - 1 ? (
+                  '…'
+                ) : (
+                  ''
+                )
+              ) : (
+                <span className="whitespace-pre-wrap">{m.content}</span>
+              )}
             </div>
           </div>
         ))}
+        {streaming && agents.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5 text-xs" style={{ color: 'var(--ink-muted)' }}>
+            {agents.map((a) => (
+              <span key={a} className="card px-2 py-0.5">
+                {AGENT_LABELS[a] ?? a} ✓
+              </span>
+            ))}
+            <span className="card px-2 py-0.5">Analyst …</span>
+          </div>
+        )}
         {error && <ErrorNote message={error} />}
       </div>
 
