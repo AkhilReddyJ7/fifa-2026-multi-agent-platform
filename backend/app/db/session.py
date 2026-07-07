@@ -6,12 +6,18 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
+# SQLite (used by CI's in-memory DATABASE_URL) runs on a StaticPool that
+# rejects the QueuePool sizing arguments Postgres uses.
+_pool_kwargs = (
+    {}
+    if settings.database_url.startswith("sqlite")
+    else {"pool_size": 10, "max_overflow": 20, "pool_pre_ping": True}
+)
+
 engine = create_async_engine(
     settings.database_url,
     echo=settings.app_debug,
-    pool_size=10,
-    max_overflow=20,
-    pool_pre_ping=True,
+    **_pool_kwargs,
 )
 
 AsyncSessionLocal = async_sessionmaker(
