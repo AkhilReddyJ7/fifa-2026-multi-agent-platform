@@ -22,6 +22,9 @@ from app.agents.state import initial_state
     # Stem matching: bare stems used to fail on their own full words
     ("Simulate the group stage", "simulate"),
     ("Who will be champions in 2026?", "simulate"),
+    # Tournament-winner questions beat the "who wins?" predict phrase
+    ("Who will win the World Cup?", "simulate"),
+    ("Who wins the World Cup?", "simulate"),
     ("Analyze GER", "analyze"),
     ("Analyze Brazil's squad and tactics", "analyze"),
     ("Show me Brazil's match statistics", "lookup"),

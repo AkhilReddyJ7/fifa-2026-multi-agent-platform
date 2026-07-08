@@ -74,7 +74,8 @@ services:
       chroma:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      # The slim python image has no curl; probe with the stdlib instead.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=4)"]
       interval: 20s
       timeout: 5s
       retries: 5

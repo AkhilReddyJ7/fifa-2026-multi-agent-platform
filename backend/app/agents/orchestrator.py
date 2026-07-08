@@ -34,6 +34,9 @@ log = structlog.get_logger()
 # Stems must not end at a \b (r"\bsimulat\b" can never match "simulate"),
 # so word-continuations are matched explicitly with \w*.
 _EXPLICIT_SIMULATE_RE = re.compile(r"\bsimulat\w*", re.I)
+# "Who (will) win(s) the World Cup?" is a tournament question, not a match
+# prediction — it must win over _PREDICT_RE's "who wins?" phrase.
+_WORLD_CUP_WINNER_RE = re.compile(r"\bwins?\s+the\s+world\s+cup\b|world\s+cup\s+winner", re.I)
 _PREDICT_RE = re.compile(
     r"\b(predict\w*|vs|versus|who wins?|chance|probability|odds|beat)\b", re.I
 )
@@ -71,9 +74,9 @@ _KNOWN_CODES = {
 
 
 def _classify_intent(query: str) -> str:
-    # An explicit "simulate …" wins even when the query also matches a
-    # predict phrase ("Simulate the tournament — who wins?").
-    if _EXPLICIT_SIMULATE_RE.search(query):
+    # An explicit "simulate …" or a tournament-winner question wins even
+    # when the query also matches a predict phrase ("… who wins?").
+    if _EXPLICIT_SIMULATE_RE.search(query) or _WORLD_CUP_WINNER_RE.search(query):
         return "simulate"
     if _PREDICT_RE.search(query):
         return "predict"
