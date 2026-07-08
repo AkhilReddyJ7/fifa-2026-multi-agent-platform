@@ -1,5 +1,9 @@
 # FIFA 2026 Multi-Agent Intelligence Platform
 
+[![CI](https://github.com/AkhilReddyJ7/fifa-2026-multi-agent-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/AkhilReddyJ7/fifa-2026-multi-agent-platform/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](backend/pyproject.toml)
+
 An AI-powered platform for FIFA 2026 World Cup analytics, match predictions, tournament simulation, and conversational AI analysis.
 
 ## Architecture Overview
@@ -25,6 +29,23 @@ Five specialist agents (Stats, Prediction, Simulation, Research, Analyst) are or
 > whole platform (predictions, simulation, chat) works offline. Set a key to get
 > real LLM-written analysis.
 
+## Screenshots
+
+| Dashboard | Match prediction |
+|---|---|
+| ![Dashboard](docs/screenshots/01-dashboard.png) | ![Match prediction with outcome probabilities](docs/screenshots/02-predict.png) |
+
+| Tournament simulation (Monte Carlo) | Streaming analyst chat |
+|---|---|
+| ![Tournament simulation](docs/screenshots/03-simulate.png) | ![Analyst chat with markdown rendering](docs/screenshots/04-chat.png) |
+
+<details>
+<summary>Dark mode</summary>
+
+![Tournament simulation in dark mode](docs/screenshots/06-simulate-dark.png)
+
+</details>
+
 ## Quick Start
 
 ### Prerequisites
@@ -34,8 +55,8 @@ Five specialist agents (Stats, Prediction, Simulation, Research, Analyst) are or
 ### 1. Clone and configure
 
 ```bash
-git clone <repo>
-cd fifa2026-platform
+git clone https://github.com/AkhilReddyJ7/fifa-2026-multi-agent-platform.git
+cd fifa-2026-multi-agent-platform
 cp .env.example .env
 # Edit .env — at minimum set SECRET_KEY and OPENAI_API_KEY
 ```
@@ -48,6 +69,9 @@ docker compose up -d --build
 ```
 
 This starts: PostgreSQL, Redis, ChromaDB, the FastAPI backend, and the React frontend.
+
+> **Tip:** common workflows are wrapped in a Makefile — `make up`, `make seed`,
+> `make test`, `make lint`, `make frontend-dev`. Run `make help` for the full list.
 
 ### 3. Run migrations
 
